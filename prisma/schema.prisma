@@ -1,0 +1,313 @@
+// ─────────────────────────────────────────────────────────────
+// AI CFO — Prisma Schema (models only)
+// The datasource URL is intentionally read from env and left empty.
+// Run `prisma generate` after providing DATABASE_URL to enable the client.
+// ─────────────────────────────────────────────────────────────
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── Enums ────────────────────────────────────────────────────
+
+enum Role {
+  OWNER
+  ACCOUNTANT
+  EMPLOYEE
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+enum InvoiceStatus {
+  DRAFT
+  SENT
+  PAID
+  OVERDUE
+  CANCELLED
+}
+
+enum CategoryKind {
+  INCOME
+  EXPENSE
+}
+
+enum AccountKind {
+  CASH
+  BANK
+  CREDIT
+  ASSET
+  LIABILITY
+}
+
+enum NotificationType {
+  INFO
+  SUCCESS
+  WARNING
+  DANGER
+}
+
+enum ReportType {
+  PROFIT_LOSS
+  CASH_FLOW
+  EXPENSE_BREAKDOWN
+  REVENUE_BREAKDOWN
+  MONTHLY
+  QUARTERLY
+  YEARLY
+}
+
+// ── Core models ──────────────────────────────────────────────
+
+model User {
+  id             String    @id @default(cuid())
+  name           String
+  email          String    @unique
+  passwordHash   String
+  role           Role      @default(OWNER)
+  emailVerified  DateTime?
+  avatarUrl      String?
+  companyId      String?
+  company        Company?  @relation(fields: [companyId], references: [id])
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  auditLogs      AuditLog[]
+  aiChats        AIChat[]
+  notifications  Notification[]
+
+  @@index([companyId])
+}
+
+model Company {
+  id          String   @id @default(cuid())
+  name        String
+  legalName   String?
+  industry    String?
+  currency    String   @default("INR")
+  taxId       String?
+  fiscalYearStart Int   @default(4) // month index (1-12)
+  address     String?
+  phone       String?
+  website     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  users        User[]
+  transactions Transaction[]
+  invoices     Invoice[]
+  expenses     Expense[]
+  revenues     Revenue[]
+  cashFlows    CashFlow[]
+  forecasts    Forecast[]
+  reports      Report[]
+  categories   Category[]
+  accounts     Account[]
+  auditLogs    AuditLog[]
+  settings     Settings?
+}
+
+model Category {
+  id         String       @id @default(cuid())
+  name       String
+  kind       CategoryKind
+  color      String       @default("#6366f1")
+  companyId  String
+  company    Company      @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  createdAt  DateTime     @default(now())
+
+  transactions Transaction[]
+  expenses     Expense[]
+  revenues     Revenue[]
+
+  @@index([companyId])
+}
+
+model Account {
+  id        String      @id @default(cuid())
+  name      String
+  kind      AccountKind
+  balance   Decimal     @default(0) @db.Decimal(14, 2)
+  companyId String
+  company   Company     @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  createdAt DateTime    @default(now())
+
+  transactions Transaction[]
+
+  @@index([companyId])
+}
+
+model Transaction {
+  id          String          @id @default(cuid())
+  type        TransactionType
+  amount      Decimal         @db.Decimal(14, 2)
+  description String
+  date        DateTime
+  companyId   String
+  company     Company         @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  categoryId  String?
+  category    Category?       @relation(fields: [categoryId], references: [id])
+  accountId   String?
+  account     Account?        @relation(fields: [accountId], references: [id])
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([companyId, date])
+}
+
+model Revenue {
+  id          String   @id @default(cuid())
+  source      String
+  amount      Decimal  @db.Decimal(14, 2)
+  date        DateTime
+  notes       String?
+  companyId   String
+  company     Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  categoryId  String?
+  category    Category? @relation(fields: [categoryId], references: [id])
+  createdAt   DateTime @default(now())
+
+  @@index([companyId, date])
+}
+
+model Expense {
+  id          String   @id @default(cuid())
+  vendor      String
+  amount      Decimal  @db.Decimal(14, 2)
+  date        DateTime
+  notes       String?
+  companyId   String
+  company     Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  categoryId  String?
+  category    Category? @relation(fields: [categoryId], references: [id])
+  createdAt   DateTime @default(now())
+
+  @@index([companyId, date])
+}
+
+model Invoice {
+  id          String        @id @default(cuid())
+  number      String
+  clientName  String
+  clientEmail String?
+  issueDate   DateTime
+  dueDate     DateTime
+  status      InvoiceStatus @default(DRAFT)
+  taxRate     Decimal       @default(0) @db.Decimal(5, 2)
+  notes       String?
+  companyId   String
+  company     Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  items       InvoiceItem[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([companyId, status])
+}
+
+model InvoiceItem {
+  id          String  @id @default(cuid())
+  invoiceId   String
+  invoice     Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  description String
+  quantity    Decimal @db.Decimal(10, 2)
+  unitPrice   Decimal @db.Decimal(14, 2)
+
+  @@index([invoiceId])
+}
+
+model CashFlow {
+  id         String   @id @default(cuid())
+  periodDate DateTime
+  inflow     Decimal  @db.Decimal(14, 2)
+  outflow    Decimal  @db.Decimal(14, 2)
+  companyId  String
+  company    Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+
+  @@index([companyId, periodDate])
+}
+
+model Forecast {
+  id         String   @id @default(cuid())
+  name       String
+  horizon    Int      // number of months projected
+  assumptions Json
+  result     Json
+  companyId  String
+  company    Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+
+  @@index([companyId])
+}
+
+model Report {
+  id         String     @id @default(cuid())
+  type       ReportType
+  title      String
+  periodFrom DateTime
+  periodTo   DateTime
+  data       Json
+  companyId  String
+  company    Company    @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  createdAt  DateTime   @default(now())
+
+  @@index([companyId, type])
+}
+
+model AIChat {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  messages  Json     // [{ role: 'user' | 'assistant', content: string, ts: number }]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      NotificationType @default(INFO)
+  title     String
+  body      String
+  read      Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  @@index([userId, read])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  companyId String
+  company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  action    String
+  entity    String
+  entityId  String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  @@index([companyId, createdAt])
+}
+
+model Settings {
+  id                String  @id @default(cuid())
+  companyId         String  @unique
+  company           Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  theme             String  @default("system")
+  emailNotifications Boolean @default(true)
+  lowCashAlert      Boolean @default(true)
+  lowCashThreshold  Decimal @default(0) @db.Decimal(14, 2)
+  updatedAt         DateTime @updatedAt
+}
