@@ -1,0 +1,325 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════════
+   AI CFO — "Financial terminal, humanized"
+   Dark-first fintech palette · ledger grid texture · mono numerals
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --radius: 0.9rem;
+
+  /* ── Light: cool paper, ink text ───────────────────────────── */
+  --background: 150 14% 97%;
+  --foreground: 200 24% 11%;
+  --surface: 0 0% 100%;
+  --surface-2: 160 16% 96%;
+
+  --muted: 160 14% 93%;
+  --muted-foreground: 200 10% 40%;
+
+  --primary: 162 84% 40%;          /* ticker mint/emerald */
+  --primary-foreground: 160 60% 99%;
+
+  --accent: 41 82% 58%;            /* warm gold */
+  --accent-foreground: 40 60% 8%;
+
+  --success: 162 74% 38%;
+  --success-foreground: 0 0% 100%;
+  --warning: 38 92% 50%;
+  --warning-foreground: 30 45% 10%;
+  --danger: 352 88% 62%;           /* ticker red */
+  --danger-foreground: 0 0% 100%;
+
+  --border: 160 14% 88%;
+  --input: 160 14% 86%;
+  --ring: 162 84% 40%;
+
+  --grid-line: 200 20% 88%;
+  --shadow-color: 190 30% 60%;
+
+  --shadow-soft: 0 1px 2px hsl(var(--shadow-color) / 0.08),
+    0 12px 28px -14px hsl(var(--shadow-color) / 0.28);
+  --shadow-lift: 0 2px 4px hsl(var(--shadow-color) / 0.1),
+    0 20px 48px -20px hsl(var(--shadow-color) / 0.4);
+  --shadow-glow: 0 0 0 1px hsl(var(--primary) / 0.25),
+    0 8px 30px -6px hsl(var(--primary) / 0.4);
+  --grain-opacity: 0.035;
+}
+
+.dark {
+  /* ── Dark: deep ink terminal ───────────────────────────────── */
+  --background: 205 32% 6%;
+  --foreground: 170 18% 92%;
+  --surface: 202 26% 9%;
+  --surface-2: 202 24% 12%;
+
+  --muted: 202 22% 15%;
+  --muted-foreground: 175 12% 62%;
+
+  --primary: 162 78% 52%;
+  --primary-foreground: 200 40% 6%;
+
+  --accent: 41 88% 62%;
+  --accent-foreground: 40 60% 8%;
+
+  --success: 162 70% 50%;
+  --success-foreground: 200 40% 6%;
+  --warning: 40 94% 60%;
+  --warning-foreground: 30 45% 8%;
+  --danger: 352 90% 66%;
+  --danger-foreground: 200 40% 6%;
+
+  --border: 200 20% 18%;
+  --input: 200 18% 20%;
+  --ring: 162 78% 52%;
+
+  --grid-line: 190 26% 20%;
+  --shadow-color: 200 60% 2%;
+
+  --shadow-soft: 0 1px 2px hsl(var(--shadow-color) / 0.5),
+    0 14px 34px -16px hsl(var(--shadow-color) / 0.7);
+  --shadow-lift: 0 2px 6px hsl(var(--shadow-color) / 0.6),
+    0 26px 60px -22px hsl(var(--shadow-color) / 0.85);
+  --shadow-glow: 0 0 0 1px hsl(var(--primary) / 0.3),
+    0 10px 40px -8px hsl(var(--primary) / 0.45);
+  --grain-opacity: 0.05;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+::selection {
+  background: hsl(var(--primary) / 0.28);
+  color: hsl(var(--foreground));
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.28);
+  border-radius: 999px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.45);
+  background-clip: content-box;
+}
+
+@layer base {
+  h1, h2, h3, h4, h5 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer components {
+  /* Numeric / data — tabular monospace. The finance signature. */
+  .tnum {
+    font-family: var(--font-mono);
+    font-feature-settings: "tnum" 1, "zero" 1;
+    font-variant-numeric: tabular-nums slashed-zero;
+    letter-spacing: -0.02em;
+  }
+
+  .surface-card {
+    background-color: hsl(var(--surface));
+    box-shadow: var(--shadow-soft);
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+  }
+  .surface-2 {
+    background-color: hsl(var(--surface-2));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+  }
+
+  /* Eyebrow label — small caps mono, used for section kickers */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: hsl(var(--primary));
+  }
+
+  .gradient-text {
+    background-image: linear-gradient(
+      100deg,
+      hsl(var(--primary)),
+      hsl(var(--accent))
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Ledger / graph-paper grid background */
+  .grid-bg {
+    background-image:
+      linear-gradient(hsl(var(--grid-line) / 0.5) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--grid-line) / 0.5) 1px, transparent 1px);
+    background-size: 44px 44px;
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 78%);
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 78%);
+  }
+
+  /* Ambient aurora glow (mint + gold), used behind hero */
+  .aurora::before {
+    content: "";
+    position: absolute;
+    inset: -20% -10% auto -10%;
+    height: 70%;
+    background:
+      radial-gradient(50% 60% at 22% 20%, hsl(var(--primary) / 0.28), transparent 70%),
+      radial-gradient(46% 55% at 82% 12%, hsl(var(--accent) / 0.22), transparent 70%),
+      radial-gradient(40% 50% at 60% 60%, hsl(var(--primary) / 0.16), transparent 72%);
+    filter: blur(20px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Film grain overlay for depth (kills the flat "AI" look) */
+  .grain::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: var(--grain-opacity);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .skeleton {
+    position: relative;
+    overflow: hidden;
+    background-color: hsl(var(--muted));
+  }
+  .skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background-image: linear-gradient(90deg, transparent, hsl(var(--surface) / 0.65), transparent);
+    animation: shimmer 1.6s infinite;
+  }
+
+  /* Chip that looks like a ticker readout */
+  .ticker-chip {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    border: 1px solid hsl(var(--border));
+    background: hsl(var(--surface));
+    border-radius: 0.6rem;
+  }
+
+  /* Elevated panel — the primary card treatment */
+  .clay {
+    background-color: hsl(var(--surface));
+    border: 1px solid hsl(var(--border));
+    box-shadow: var(--shadow-lift);
+    border-radius: calc(var(--radius) + 4px);
+  }
+  .clay-sm {
+    background-color: hsl(var(--surface-2));
+    border: 1px solid hsl(var(--border));
+    box-shadow: var(--shadow-soft);
+    border-radius: var(--radius);
+  }
+  .clay-inset {
+    background-color: hsl(var(--muted));
+    box-shadow: inset 0 1px 3px hsl(var(--shadow-color) / 0.2);
+  }
+
+  /* Ambient section backdrop */
+  .mesh-bg {
+    position: relative;
+    background-image:
+      radial-gradient(60% 55% at 15% 0%, hsl(var(--primary) / 0.1), transparent 70%),
+      radial-gradient(50% 50% at 88% 8%, hsl(var(--accent) / 0.09), transparent 70%),
+      radial-gradient(50% 60% at 65% 100%, hsl(var(--primary) / 0.07), transparent 72%);
+  }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .bg-dots {
+    background-image: radial-gradient(hsl(var(--grid-line) / 0.7) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+}
+
+/* ── Keyframes ──────────────────────────────────────────────── */
+@keyframes shimmer { 100% { transform: translateX(100%); } }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes pulse-node {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.9); }
+}
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes ticker-flip {
+  0% { opacity: 0; transform: translateY(0.4em); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in { animation: fade-in 0.5s ease-out both; }
+.animate-fade-up { animation: fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.animate-scale-in { animation: scale-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.animate-float { animation: float 7s ease-in-out infinite; }
+.animate-marquee { animation: marquee 32s linear infinite; }
+
+/* Focus visibility */
+:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
