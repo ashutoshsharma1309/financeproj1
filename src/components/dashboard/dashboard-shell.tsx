@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Sidebar } from "./sidebar";
 import { Topbar } from "./topbar";
 import { Onboarding } from "./onboarding";
+import { SkipLink } from "@/components/ui/skip-link";
 import { useAuthStore } from "@/lib/auth";
 import { useFinanceStore } from "@/lib/store";
 import { useHydrated } from "@/hooks/use-hydrated";
@@ -38,10 +39,11 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen bg-background">
+      <SkipLink />
       <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       <div className="lg:pl-72">
         <Topbar onMenu={() => setSidebarOpen(true)} />
-        <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <main id="main" className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
           <div className="animate-fade-in">{children}</div>
         </main>
       </div>

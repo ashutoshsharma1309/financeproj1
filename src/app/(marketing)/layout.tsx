@@ -1,5 +1,6 @@
 import { MarketingNav } from "@/components/marketing/marketing-nav";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
+import { SkipLink } from "@/components/ui/skip-link";
 
 export default function MarketingLayout({
   children,
@@ -8,8 +9,11 @@ export default function MarketingLayout({
 }) {
   return (
     <div className="flex min-h-screen flex-col">
+      <SkipLink />
       <MarketingNav />
-      <main className="flex-1">{children}</main>
+      <main id="main" className="flex-1">
+        {children}
+      </main>
       <MarketingFooter />
     </div>
   );
