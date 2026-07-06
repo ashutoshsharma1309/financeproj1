@@ -59,6 +59,22 @@ npm run build && npm run start
 > schema, Gemini client, auth store and security matrix are structured so a real
 > database and API can be added without architectural changes.
 
+## ☁️ Deploy
+
+The app deploys to any Node host. On **Vercel**, import the repo — the included
+[`vercel.json`](./vercel.json) sets the framework, build command and security
+headers; add your environment variables in the project settings.
+
+```bash
+npm i -g vercel
+vercel        # preview
+vercel --prod # production
+```
+
+Node version is pinned in [`.nvmrc`](./.nvmrc). CI (lint, typecheck, build)
+runs on every push via [GitHub Actions](./.github/workflows/ci.yml) and is
+designed to pass with empty secrets — the app degrades gracefully.
+
 ## 🔐 Environment Variables
 
 All are optional for local/hackathon use and left empty in `.env.example`:
