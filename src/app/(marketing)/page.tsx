@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { HeroVisual } from "@/components/marketing/hero-visual";
 import { CapabilityMarquee } from "@/components/marketing/capability-marquee";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
+import { StructuredData } from "@/components/marketing/structured-data";
 
 const features = [
   { icon: Wallet, title: "Revenue & expenses", desc: "Log income and spending in seconds. Every total, margin and trend recomputes from what you enter." },
@@ -49,6 +50,7 @@ const faqs = [
 export default function LandingPage() {
   return (
     <>
+      <StructuredData />
       {/* ── Hero ─────────────────────────────────────────────── */}
       <section className="relative overflow-hidden">
         <div className="aurora absolute inset-0" aria-hidden />
