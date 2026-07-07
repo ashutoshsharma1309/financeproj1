@@ -108,6 +108,31 @@ src/lib/security.ts           RBAC permission matrix
 src/lib/validators.ts         Zod schemas for every form
 ```
 
+## 🏗️ Architecture at a glance
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  App Router (src/app)                                        │
+│  (marketing)      (auth)          (app) — authenticated      │
+│  landing/pricing  login/signup    dashboard + 15 modules     │
+└───────────────┬─────────────────────────┬───────────────────┘
+                │ reads/writes             │ derives
+        ┌───────▼────────┐        ┌────────▼─────────┐
+        │  Zustand stores │        │ calculations.ts  │
+        │  store · auth   │        │ (pure functions) │
+        │  → localStorage │        │ totals · runway  │
+        └───────┬────────┘        │ forecasts · P&L  │
+                │                  └────────┬─────────┘
+        ┌───────▼────────┐        ┌────────▼─────────┐
+        │ validators (zod)│        │ AI route + Gemini│
+        │ security (RBAC) │        │ offline fallback │
+        └────────────────┘        └──────────────────┘
+```
+
+State lives in the browser today; the Prisma schema and API layer are shaped so
+a real database can be dropped in without UI changes. Every number the UI shows
+is produced by a pure function in `calculations.ts` — never hardcoded.
+
 ## 🧮 How calculations work
 
 `src/lib/calculations.ts` contains pure functions that transform your entries
