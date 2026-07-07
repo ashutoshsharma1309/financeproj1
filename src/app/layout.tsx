@@ -4,7 +4,10 @@ import { fontDisplay, fontSans, fontMono } from "./fonts";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { ToastProvider } from "@/components/ui/toast";
 
+const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(appUrl),
   title: {
     default: "AI CFO — Your AI-powered Chief Financial Officer",
     template: "%s · AI CFO",
@@ -20,17 +23,27 @@ export const metadata: Metadata = {
     "invoicing",
   ],
   authors: [{ name: "AI CFO" }],
+  applicationName: "AI CFO",
   openGraph: {
-    title: "AI CFO",
-    description: "Your AI-powered Chief Financial Officer for Small & Medium Businesses.",
+    title: "AI CFO — Your AI-powered Chief Financial Officer",
+    description:
+      "Manage revenue, expenses, invoices, cash flow and forecasts — with insights drawn only from your own data.",
     type: "website",
+    siteName: "AI CFO",
+    url: appUrl,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "AI CFO — Your AI-powered Chief Financial Officer",
+    description:
+      "Finance for SMBs, grounded only in your own data. No fabricated numbers.",
   },
 };
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f5f5fb" },
-    { media: "(prefers-color-scheme: dark)", color: "#14161f" },
+    { media: "(prefers-color-scheme: light)", color: "#f7f8f5" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0e14" },
   ],
   width: "device-width",
   initialScale: 1,
