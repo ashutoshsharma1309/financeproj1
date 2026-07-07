@@ -1,0 +1,4 @@
+# AI CFO — security contact (RFC 9116)
+Contact: mailto:security@aicfo.app
+Preferred-Languages: en
+Policy: https://github.com/ashutoshsharma1309/financeproj1/blob/main/SECURITY.md
