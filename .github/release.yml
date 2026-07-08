@@ -1,0 +1,14 @@
+changelog:
+  categories:
+    - title: ✨ Features
+      labels: ["feat", "enhancement"]
+    - title: 🐛 Fixes
+      labels: ["fix", "bug"]
+    - title: 📝 Documentation
+      labels: ["documentation", "docs"]
+    - title: 🧪 Tests
+      labels: ["tests", "test"]
+    - title: 🔧 Maintenance
+      labels: ["chore", "ci"]
+    - title: Other changes
+      labels: ["*"]
