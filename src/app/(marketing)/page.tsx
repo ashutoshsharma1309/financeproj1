@@ -171,6 +171,58 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ── Comparison ───────────────────────────────────────── */}
+      <section className="mx-auto max-w-5xl px-4 py-24 sm:px-6">
+        <Reveal className="mx-auto max-w-2xl text-center">
+          <p className="eyebrow">The difference</p>
+          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+            Beyond the spreadsheet
+          </h2>
+        </Reveal>
+        <div className="mt-12 grid gap-5 md:grid-cols-2">
+          <Reveal>
+            <div className="surface-card h-full p-7">
+              <p className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
+                A spreadsheet
+              </p>
+              <ul className="mt-5 space-y-3 text-sm text-muted-foreground">
+                {[
+                  "Formulas break silently as rows grow",
+                  "No view of runway or forecasts",
+                  "Manual charts that go stale",
+                  "One file, no roles or audit trail",
+                  "Answers require you to build them",
+                ].map((t) => (
+                  <li key={t} className="flex items-start gap-2.5">
+                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-muted-foreground/50" />
+                    {t}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <div className="clay h-full p-7 ring-1 ring-primary/30">
+              <p className="eyebrow">AI CFO</p>
+              <ul className="mt-5 space-y-3 text-sm">
+                {[
+                  "Totals and margins always in sync",
+                  "Runway and forecasts, live",
+                  "Beautiful charts that update themselves",
+                  "Roles, notifications and a full audit trail",
+                  "Ask a question, get a grounded answer",
+                ].map((t) => (
+                  <li key={t} className="flex items-start gap-2.5">
+                    <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                    {t}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
       {/* ── Audiences ────────────────────────────────────────── */}
       <section className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
         <Reveal className="mx-auto max-w-2xl text-center">
