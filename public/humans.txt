@@ -1,0 +1,9 @@
+/* TEAM */
+  Maintainer: Ashutosh Sharma
+  Site: https://github.com/ashutoshsharma1309/financeproj1
+
+/* TECHNOLOGY */
+  Next.js, TypeScript, Tailwind CSS, Zustand, Recharts, Framer Motion, Zod, Prisma
+
+/* THANKS */
+  Built for small & medium businesses that deserve real financial clarity.
