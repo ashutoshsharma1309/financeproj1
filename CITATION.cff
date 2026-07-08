@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "AI CFO"
+abstract: "An AI-powered financial platform for small & medium businesses that derives every insight from user-entered data."
+authors:
+  - family-names: Sharma
+    given-names: Ashutosh
+repository-code: "https://github.com/ashutoshsharma1309/financeproj1"
+license: MIT
+version: "1.0.0"
+date-released: "2026-07-08"
+keywords:
+  - finance
+  - saas
+  - nextjs
+  - ai
