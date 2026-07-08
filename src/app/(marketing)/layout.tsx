@@ -1,5 +1,6 @@
 import { MarketingNav } from "@/components/marketing/marketing-nav";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
+import { BackToTop } from "@/components/marketing/back-to-top";
 import { SkipLink } from "@/components/ui/skip-link";
 
 export default function MarketingLayout({
@@ -15,6 +16,7 @@ export default function MarketingLayout({
         {children}
       </main>
       <MarketingFooter />
+      <BackToTop />
     </div>
   );
 }
