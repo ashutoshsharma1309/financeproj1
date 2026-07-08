@@ -29,6 +29,23 @@ export function Topbar({ onMenu }: { onMenu: () => void }) {
       )
     : [];
 
+  const searchRef = React.useRef<HTMLInputElement>(null);
+  React.useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      const el = document.activeElement;
+      const typing =
+        el instanceof HTMLInputElement ||
+        el instanceof HTMLTextAreaElement ||
+        (el as HTMLElement | null)?.isContentEditable;
+      if (e.key === "/" && !typing) {
+        e.preventDefault();
+        searchRef.current?.focus();
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
   const initials = (user?.name ?? "U")
     .split(" ")
     .map((n) => n[0])
@@ -50,14 +67,21 @@ export function Topbar({ onMenu }: { onMenu: () => void }) {
       <div className="relative max-w-md flex-1">
         <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <input
+          ref={searchRef}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => setFocused(true)}
           onBlur={() => setTimeout(() => setFocused(false), 150)}
           placeholder="Search pages…"
-          className="h-10 w-full rounded-xl border border-input bg-surface pl-9 pr-4 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-ring/30"
+          className="h-10 w-full rounded-xl border border-input bg-surface pl-9 pr-10 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-ring/30"
           aria-label="Search pages"
         />
+        <kbd
+          className="pointer-events-none absolute right-3 top-1/2 hidden -translate-y-1/2 rounded-md border border-border bg-muted px-1.5 py-0.5 font-mono text-[11px] text-muted-foreground sm:block"
+          aria-hidden
+        >
+          /
+        </kbd>
         {focused && results.length > 0 && (
           <div className="absolute left-0 right-0 top-12 z-40 overflow-hidden rounded-xl bg-surface p-1.5 shadow-clay">
             {results.slice(0, 6).map((r) => (
