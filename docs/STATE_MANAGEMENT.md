@@ -27,7 +27,19 @@ const income = React.useMemo(
 );
 ```
 
-Or wrap the selector with `useShallow`.
+Or wrap the selector with `useShallow` (as `useFinanceData` does). This rule is
+important enough to have its own record — see
+[ADR 0013](./adr/0013-zustand-selector-discipline.md).
+
+## Deriving persisted alerts
+
+Notifications are derived from real data, not authored by hand. The store's
+`ingestAlerts` action persists alerts computed by `deriveAlerts` (in
+`src/lib/notifications.ts`), keeping only those whose condition `key` isn't
+already stored. A headless `<NotificationSync />` mounted in `DashboardShell`
+runs this app-wide, so the topbar bell stays accurate on every page. See
+[Notifications](./NOTIFICATIONS.md) and
+[ADR 0007](./adr/0007-condition-keyed-notifications.md).
 
 ## Hydration
 
