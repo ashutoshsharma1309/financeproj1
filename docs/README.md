@@ -1,14 +1,53 @@
 # Documentation
 
-Guides for understanding and extending AI CFO.
+Guides for using, understanding and extending AI CFO.
 
-- [Architecture](./ARCHITECTURE.md) — layers, route groups and data flow.
-- [Data model](./DATA_MODEL.md) — entities and relationships.
-- [AI assistant](./AI_ASSISTANT.md) — how answers stay grounded in your data.
-- [Design system](./DESIGN_SYSTEM.md) — color, type, texture and components.
-- [Deployment](./DEPLOYMENT.md) — Vercel and self-hosting.
+## Start here
+
+- [Getting started](./GETTING_STARTED.md) — clone to first insight in five minutes.
+- [Modules](./MODULES.md) — a map of every part of the app.
+- [Glossary](./GLOSSARY.md) — plain-language finance terms.
 - [FAQ](./FAQ.md) — common questions.
 
-See the project [README](../README.md) for a feature overview and quick start,
-[CONTRIBUTING](../CONTRIBUTING.md) to get set up, and [ROADMAP](../ROADMAP.md)
-for what's next.
+## Module guides
+
+- [Dashboard](./DASHBOARD.md)
+- [Transactions](./TRANSACTIONS.md)
+- [Revenue](./REVENUE.md)
+- [Expenses](./EXPENSES.md)
+- [Invoices](./INVOICES.md)
+- [Cash flow](./CASH_FLOW.md)
+- [Forecasts](./FORECASTS.md)
+- [Reports](./REPORTS.md)
+
+## Concepts
+
+- [Architecture](./ARCHITECTURE.md)
+- [Data model](./DATA_MODEL.md)
+- [State management](./STATE_MANAGEMENT.md)
+- [Calculation engine](./CALCULATIONS.md)
+- [AI assistant](./AI_ASSISTANT.md)
+- [Auth & roles](./AUTH_AND_ROLES.md)
+
+## Design & UX
+
+- [Design system](./DESIGN_SYSTEM.md)
+- [Theming](./THEMING.md)
+- [Components](./COMPONENTS.md)
+- [Accessibility](./ACCESSIBILITY.md)
+- [Keyboard shortcuts](./KEYBOARD_SHORTCUTS.md)
+
+## Operate
+
+- [Environment](./ENVIRONMENT.md)
+- [Deployment](./DEPLOYMENT.md)
+- [Testing](./TESTING.md)
+- [Performance](./PERFORMANCE.md)
+- [Exports](./EXPORTS.md)
+- [Troubleshooting](./TROUBLESHOOTING.md)
+
+## Project
+
+See the project [README](../README.md) for a feature overview,
+[CONTRIBUTING](../CONTRIBUTING.md) to get set up, [ROADMAP](../ROADMAP.md) for
+what's next, and [CHANGELOG](../CHANGELOG.md) for history.
