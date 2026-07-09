@@ -27,3 +27,9 @@ data. It never fabricates figures.
 
 Set `GEMINI_API_KEY` (and optionally `GEMINI_MODEL`) in your environment. With no
 key, the assistant still returns useful, data-grounded responses.
+
+## See also
+
+- Decision & trade-offs: [ADR 0010](./adr/0010-ai-grounding-local-fallback.md)
+- The no-fabrication principle it upholds:
+  [ADR 0004](./adr/0004-never-fabricate-financial-data.md)
