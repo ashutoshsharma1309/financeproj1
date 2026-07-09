@@ -23,7 +23,22 @@ zeroed results.
 | `buildProfitLoss` | P&L totals and category breakdowns for a range |
 | `hasAnyData` | Whether any records exist (drives empty states) |
 
+## Truth-model notes
+
+A few rules worth stating explicitly, because surfaces used to disagree on them:
+
+- `invoiceStats` buckets by the **effective** status, so a past-due `SENT`
+  invoice counts as overdue in the KPIs exactly as it shows in the table.
+  Outstanding still includes overdue — the money is owed either way.
+  ([ADR 0006](./adr/0006-effective-invoice-status.md))
+- `runwayMonths` returns `Infinity` when the business isn't burning cash
+  (non-negative average net), so a profitable company has no runway limit.
+- Guarded divisions never blow up on zero data: `profitMargin` returns `0` when
+  revenue is `0`, and `hasAnyData` gates empty states.
+
 ## Testing
 
 These functions are covered by unit tests — see [Testing](./TESTING.md). Because
-they're pure, they're fast and deterministic to test.
+they're pure, they're fast and deterministic to test. Clock-dependent functions
+(`monthlySeries`, `runwayMonths`, `projectForecast`) are exercised with dates
+built relative to the current month.
