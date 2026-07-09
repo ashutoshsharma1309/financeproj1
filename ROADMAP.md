@@ -13,7 +13,9 @@ promise: every figure is derived from your own data.
 
 - [ ] Persist to a database behind `DATABASE_URL` (Prisma models are ready)
 - [ ] Real authentication (JWT verification and email verification)
-- [ ] Recurring transactions and invoice reminders
+- [ ] Recurring transactions and invoice reminders — overdue invoices already
+      surface as in-app [notifications](./docs/NOTIFICATIONS.md); email reminders
+      are the remaining piece
 - [ ] Multi-company workspaces
 - [ ] Bank/CSV import for faster data entry
 
