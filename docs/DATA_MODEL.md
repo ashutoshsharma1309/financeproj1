@@ -18,6 +18,19 @@ datasource URL is read from `DATABASE_URL` and left empty for local use.
 - **AIChat** — assistant conversations.
 - **Notification** / **AuditLog** / **Settings** — workspace support tables.
 
+## Derived vs. stored
+
+Not everything the UI shows is stored — much is derived on read. Two notable
+cases the client models explicitly:
+
+- **Notification** carries an optional `key` (e.g. `invoices-overdue`,
+  `runway-low`): a stable *condition* identifier used to de-duplicate alerts that
+  are derived from data rather than authored by hand. See
+  [Notifications](./NOTIFICATIONS.md).
+- **Invoice** has a stored `status`, but consumers use the date-aware
+  *effective* status so a past-due `SENT` invoice reads as overdue everywhere.
+  See [ADR 0006](./adr/0006-effective-invoice-status.md).
+
 ## Relationships
 
 Everything hangs off `Company`. `User.companyId` links people to a workspace;
