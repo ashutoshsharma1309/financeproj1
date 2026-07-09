@@ -108,6 +108,27 @@ describe("invoice stats", () => {
     expect(stats.paidAmount).toBe(5900);
     expect(stats.outstandingAmount).toBe(5900);
   });
+
+  it("treats a past-due SENT invoice as overdue (and still outstanding)", () => {
+    const stats = invoiceStats([
+      makeInvoice({ id: "od", status: "SENT", dueDate: "2000-01-01" }),
+    ]);
+    // Effective status is OVERDUE, so it counts as overdue...
+    expect(stats.overdueCount).toBe(1);
+    expect(stats.overdueAmount).toBe(5900);
+    // ...and the money is still owed, so it remains outstanding.
+    expect(stats.outstandingCount).toBe(1);
+    expect(stats.outstandingAmount).toBe(5900);
+    expect(stats.paidCount).toBe(0);
+  });
+
+  it("keeps a not-yet-due SENT invoice out of the overdue bucket", () => {
+    const stats = invoiceStats([
+      makeInvoice({ id: "s", status: "SENT", dueDate: "2999-01-01" }),
+    ]);
+    expect(stats.overdueCount).toBe(0);
+    expect(stats.outstandingCount).toBe(1);
+  });
 });
 
 describe("hasAnyData", () => {

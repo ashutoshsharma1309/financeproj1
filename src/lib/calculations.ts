@@ -237,13 +237,18 @@ export function categoryBreakdown(
 // ── Invoice analytics ────────────────────────────────────────
 
 export function invoiceStats(invoices: Invoice[]) {
-  const withTotals = invoices.map((i) => ({ invoice: i, total: invoiceTotal(i) }));
-  const paid = withTotals.filter((x) => x.invoice.status === "PAID");
+  // Bucket by the *effective* status so a past-due SENT invoice is treated as
+  // OVERDUE here exactly as it is in the invoices table and status badges.
+  const withTotals = invoices.map((i) => ({
+    status: effectiveInvoiceStatus(i),
+    total: invoiceTotal(i),
+  }));
+  const paid = withTotals.filter((x) => x.status === "PAID");
   const outstanding = withTotals.filter(
-    (x) => x.invoice.status === "SENT" || x.invoice.status === "OVERDUE",
+    (x) => x.status === "SENT" || x.status === "OVERDUE",
   );
-  const overdue = withTotals.filter((x) => x.invoice.status === "OVERDUE");
-  const draft = withTotals.filter((x) => x.invoice.status === "DRAFT");
+  const overdue = withTotals.filter((x) => x.status === "OVERDUE");
+  const draft = withTotals.filter((x) => x.status === "DRAFT");
   return {
     count: invoices.length,
     paidAmount: sumBy(paid, (x) => x.total),

@@ -6,6 +6,13 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Fixed
+
+- Invoice overdue amounts now match the status shown in the table: `invoiceStats`
+  buckets by the date-aware effective status, so a past-due `SENT` invoice is
+  counted as overdue in the KPI cards, the AI context and the notifications
+  alert. Outstanding still includes overdue (the money is owed).
+
 ### Added
 
 - SEO: `robots.txt`, `sitemap.xml`, JSON-LD structured data, Open Graph and
