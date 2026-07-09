@@ -19,10 +19,12 @@ Guides for using, understanding and extending AI CFO.
 - [Cash flow](./CASH_FLOW.md)
 - [Forecasts](./FORECASTS.md)
 - [Reports](./REPORTS.md)
+- [Notifications](./NOTIFICATIONS.md)
 
 ## Concepts
 
 - [Architecture](./ARCHITECTURE.md)
+- [Architecture decision records](./adr/README.md) — the *why* behind key choices.
 - [Data model](./DATA_MODEL.md)
 - [State management](./STATE_MANAGEMENT.md)
 - [Calculation engine](./CALCULATIONS.md)
