@@ -12,8 +12,11 @@ Plain-language definitions of the finance terms used across AI CFO.
   income.
 - **Runway** — how many months your cash lasts at the current burn rate.
 - **Invoice** — a bill sent to a client, with line items and tax.
-- **Outstanding** — invoiced amounts not yet paid.
+- **Outstanding** — invoiced amounts not yet paid (includes overdue).
 - **Overdue** — sent invoices past their due date.
+- **Effective status** — an invoice's real status computed from its due date, so
+  a sent invoice past due reads as overdue everywhere, whatever the stored field
+  says.
 - **Subtotal / tax / total** — line-item sum, tax applied, and the final amount.
 - **Forecast** — a projection of future revenue, expenses and cash from
   assumptions you set.
