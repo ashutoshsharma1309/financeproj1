@@ -44,10 +44,15 @@ is absent.
 - Verified: build green; charts render end-to-end with real data (no stuck
   skeleton); no hydration warnings.
 
-### M3 — Test depth — TODO
-- Add component/interaction tests (Vitest + Testing Library + jsdom) for a
-  critical flow (e.g. add-revenue) and more calc edge cases
-  (`cashFlowSeries`, `monthOverMonth`, `monthlySeries`).
+### M3 — Test depth — IN PROGRESS
+- **Done:** added calc edge-case coverage — `streams.test.ts` (income/expense
+  streams, profitMargin guard, asset/liability roll-ups), `monthly-series.test.ts`
+  (`monthlySeries`, `monthOverMonth`), `runway.test.ts` (`monthlyBurn`,
+  `runwayMonths`, `cashFlowSeries`). Suite grew 51 → 69 tests, all green in CI.
+  Clock-dependent functions are tested with dates relative to the current month.
+- **Remaining:** component/interaction tests (Testing Library + jsdom) for a
+  critical flow such as add-revenue. Deferred as a separate unit because it
+  introduces a new test environment (jsdom) and setup.
 - DoD: new tests pass in CI; no flakiness.
 
 ### M4 — Dependency & code hygiene — DONE
