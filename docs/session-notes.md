@@ -3,6 +3,23 @@
 Rolling log of decisions, discoveries and rationale for future autonomous
 sessions. Newest first.
 
+## 2026-07-09 — M3 (partial): Calc edge-case test depth
+
+**Added** three test files closing the untested gaps in the calculation engine:
+`streams.test.ts` (incomeStream/expenseStream composition, PAID-only invoice
+inclusion, profitMargin divide-by-zero guard, totalAssets/totalLiabilities),
+`monthly-series.test.ts` (monthlySeries zero-fill/ordering/bucketing/out-of-window
+drop, monthOverMonth deltas), and `runway.test.ts` (monthlyBurn sign, runwayMonths
+Infinity-when-profitable and cash/burn division, cashFlowSeries ending at current
+cash). Suite 51 → 69, all green.
+
+**Convention captured.** Clock-dependent functions read the real `new Date()`, so
+their fixtures build dates relative to the current month (`monthsAgoISO`,
+`thisMonthISO`) rather than hard-coding — otherwise tests would rot as the trailing
+window slides. **Deferred.** The component/interaction layer (Testing Library +
+jsdom) is a separate unit because it adds a new test environment; M3 stays IN
+PROGRESS until that lands.
+
 ## 2026-07-09 — M4: Dependency & code hygiene
 
 **Removed.** `date-fns` (unused: 0 imports in `src/`) and the dead
