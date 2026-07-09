@@ -15,7 +15,10 @@ AI CFO aims to feel instant. A few practices keep it fast.
 - Chart wrappers are **code-split** via `next/dynamic` (`ssr: false`,
   `src/components/charts/lazy.tsx`), so Recharts (~108 kB) loads on demand
   behind a height-matched skeleton — first-load JS on chart routes dropped
-  ~40–50%. Import charts from `@/components/charts/lazy` (not `.../charts`).
+  ~40–50% (dashboard 222→113 kB, cash-flow 269→161 kB, forecasts 268→159 kB,
+  reports 216→108 kB). Import charts from `@/components/charts/lazy` (not
+  `.../charts`). Rationale and the SWC inline-literal gotcha:
+  [ADR 0008](./adr/0008-code-split-charts.md).
 - Fonts are loaded with `next/font` (self-hosted, `display: swap`) to avoid
   layout shift and external requests.
 
