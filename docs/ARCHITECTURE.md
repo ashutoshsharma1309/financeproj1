@@ -36,3 +36,9 @@ hardcoded; empty input yields zeroed results and empty states.
 Replace the store actions with API calls and mount the Prisma client behind
 `DATABASE_URL`. The permission matrix in `security.ts` is designed to gate API
 routes server-side too. The AI route already runs on the server.
+
+## Why these choices
+
+The reasoning behind the non-obvious decisions above — client-side state, the
+pure calculation engine, schema-only Prisma, AI grounding, and more — is recorded
+in the [Architecture Decision Records](./adr/README.md).
