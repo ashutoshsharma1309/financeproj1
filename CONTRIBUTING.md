@@ -35,7 +35,15 @@ All three must pass. The build is designed to succeed with empty secrets.
   Selectors must return stable references — derive arrays/objects with `useMemo`
   or `useShallow`, never inline `.filter()`/`.map()` inside a selector.
 - **Validation** for every form uses the Zod schemas in `src/lib/validators.ts`.
+- **Tests** for pure logic in `src/lib` use Vitest (`npm test`, or
+  `npm run test:watch`); add coverage alongside behavior changes.
 - Match the surrounding code style; Prettier config is in `.prettierrc`.
+
+## Architecture decisions
+
+When you make a non-obvious architectural choice (or reverse one), add an
+[Architecture Decision Record](./docs/adr/README.md) using the template. It keeps
+the reasoning trail honest for whoever picks the work up next.
 
 ## Commit messages
 
