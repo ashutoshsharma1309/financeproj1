@@ -28,3 +28,9 @@ routes server-side once a backend is wired up.
 
 `view:dashboard`, `manage:transactions`, `manage:invoices`, `manage:company`,
 `manage:team`, `view:reports`, `view:audit`, `use:ai`.
+
+## Note on security
+
+The client-side auth store and `weakHash` are an honest **stand-in**, not real
+security — real hashing, sessions and server-side enforcement come with the
+backend milestone. Reasoning: [ADR 0011](./adr/0011-client-auth-rbac.md).
