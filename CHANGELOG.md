@@ -28,6 +28,11 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- Notifications now persist from real data: overdue-invoice and low-runway
+  alerts are derived (never fabricated), de-duplicated by condition, and stored
+  so the topbar bell count is accurate on every page — not just the
+  Notifications page. Backed by a pure `deriveAlerts`/`pickNewAlerts` helper with
+  9 unit tests.
 - SEO: `robots.txt`, `sitemap.xml`, JSON-LD structured data, Open Graph and
   Twitter metadata, and `metadataBase`.
 - PWA web app manifest and a gradient candlestick favicon.

@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import {
   Bell,
   CheckCheck,
@@ -9,15 +8,12 @@ import {
   CheckCircle2,
   AlertTriangle,
   XCircle,
-  Sparkles,
 } from "lucide-react";
 import { PageHeader } from "@/components/ui/page-header";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { useFinanceStore } from "@/lib/store";
-import { useFinanceData } from "@/hooks/use-finance-data";
-import { invoiceStats, runwayMonths } from "@/lib/calculations";
 import { cn, formatDate } from "@/lib/utils";
 import type { NotificationType } from "@/lib/types";
 
@@ -35,35 +31,12 @@ const tones: Record<NotificationType, string> = {
 };
 
 export default function NotificationsPage() {
-  const data = useFinanceData();
   const notifications = useFinanceStore((s) => s.notifications);
   const markRead = useFinanceStore((s) => s.markNotificationRead);
   const markAllRead = useFinanceStore((s) => s.markAllNotificationsRead);
   const clear = useFinanceStore((s) => s.clearNotifications);
-  const settings = useFinanceStore((s) => s.settings);
 
-  // Derived, real-time alerts computed from the user's own data.
-  const stats = invoiceStats(data.invoices);
-  const runway = runwayMonths(data);
-  const alerts: { id: string; type: NotificationType; title: string; body: string }[] = [];
-  if (stats.overdueCount > 0) {
-    alerts.push({
-      id: "alert-overdue",
-      type: "DANGER",
-      title: `${stats.overdueCount} overdue invoice(s)`,
-      body: "You have collectible cash sitting in overdue invoices. Consider following up.",
-    });
-  }
-  if (settings.lowCashAlert && Number.isFinite(runway) && runway < 6) {
-    alerts.push({
-      id: "alert-runway",
-      type: "WARNING",
-      title: "Runway below 6 months",
-      body: `At your current burn rate, your cash covers about ${runway.toFixed(1)} more months.`,
-    });
-  }
-
-  const empty = notifications.length === 0 && alerts.length === 0;
+  const empty = notifications.length === 0;
 
   return (
     <div>
@@ -92,26 +65,6 @@ export default function NotificationsPage() {
         />
       ) : (
         <div className="space-y-3">
-          {alerts.map((a) => {
-            const Icon = icons[a.type];
-            return (
-              <Card key={a.id} className="flex items-start gap-4 border-l-4 border-l-warning p-4">
-                <span className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl", tones[a.type])}>
-                  <Icon className="h-5 w-5" />
-                </span>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <p className="font-medium">{a.title}</p>
-                    <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-primary">
-                      <Sparkles className="h-3 w-3" /> Live
-                    </span>
-                  </div>
-                  <p className="mt-0.5 text-sm text-muted-foreground">{a.body}</p>
-                </div>
-              </Card>
-            );
-          })}
-
           {notifications.map((n) => {
             const Icon = icons[n.type];
             return (

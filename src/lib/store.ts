@@ -3,6 +3,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { uid } from "./utils";
+import { pickNewAlerts, type DerivedAlert } from "./notifications";
 import type {
   Account,
   AIChat,
@@ -93,6 +94,8 @@ export interface FinanceState {
 
   // notifications
   pushNotification: (n: Omit<Notification, "id" | "createdAt" | "read">) => void;
+  /** Persist freshly derived alerts, skipping any whose condition key already exists. */
+  ingestAlerts: (alerts: DerivedAlert[]) => void;
   markNotificationRead: (id: string) => void;
   markAllNotificationsRead: () => void;
   clearNotifications: () => void;
@@ -343,6 +346,22 @@ export const useFinanceStore = create<FinanceState>()(
             ...s.notifications,
           ].slice(0, 100),
         })),
+      ingestAlerts: (alerts) =>
+        set((s) => {
+          const fresh = pickNewAlerts(s.notifications, alerts);
+          if (fresh.length === 0) return {} as Partial<FinanceState>;
+          const now = new Date().toISOString();
+          const created = fresh.map((a) => ({
+            id: uid("ntf"),
+            key: a.key,
+            type: a.type,
+            title: a.title,
+            body: a.body,
+            read: false,
+            createdAt: now,
+          }));
+          return { notifications: [...created, ...s.notifications].slice(0, 100) };
+        }),
       markNotificationRead: (id) =>
         set((s) => ({
           notifications: s.notifications.map((n) =>

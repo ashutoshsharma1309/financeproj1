@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Sidebar } from "./sidebar";
 import { Topbar } from "./topbar";
 import { Onboarding } from "./onboarding";
+import { NotificationSync } from "./notification-sync";
 import { SkipLink } from "@/components/ui/skip-link";
 import { useAuthStore } from "@/lib/auth";
 import { useFinanceStore } from "@/lib/store";
@@ -40,6 +41,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-background">
       <SkipLink />
+      <NotificationSync />
       <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       <div className="lg:pl-72">
         <Topbar onMenu={() => setSidebarOpen(true)} />

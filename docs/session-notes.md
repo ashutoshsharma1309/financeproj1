@@ -3,6 +3,34 @@
 Rolling log of decisions, discoveries and rationale for future autonomous
 sessions. Newest first.
 
+## 2026-07-09 — M1: Notifications derived & persisted from data
+
+**Problem.** The Notifications page re-computed "Live" alerts inline on each
+render but never persisted them, so `pushNotification` was dead code and the
+topbar bell (which counts unread persisted notifications) was always 0 — the
+alert never followed the user off the Notifications page.
+
+**Approach.** Split the logic into a pure module `src/lib/notifications.ts`:
+`deriveAlerts(data, settings)` returns alerts (overdue invoices, runway < 6mo)
+each tagged with a stable **condition** key (`invoices-overdue`, `runway-low`),
+and `pickNewAlerts(existing, derived)` filters out keys already persisted. A new
+store action `ingestAlerts` persists only fresh keys; a headless
+`<NotificationSync />` mounted in `DashboardShell` derives + ingests app-wide via
+a `useMemo`/`useEffect`, so the bell is correct on every page. The Notifications
+page was simplified to render the persisted feed (dropping the duplicated inline
+derivation and the now-redundant "Live" block).
+
+**Design choice.** Key by condition, not by value — so a change in overdue count
+doesn't spawn a second notification for the same situation; `clearNotifications`
+resets the keys and lets a fresh cycle re-notify. This is exactly what makes
+"no duplicates on re-visit" hold.
+
+**Verified (browser, prod build).** Seeded a past-due SENT invoice → one
+persisted alert (key `invoices-overdue`), bell = 1, stayed 1 across repeated
+navigation between /dashboard and /notifications (no dupes); the feed rendered
+with Mark read / Mark all read. 9 unit tests (51 total) + build green. No
+fabricated data — every alert derives from real user entries.
+
 ## 2026-07-09 — M2: Lazy-load charts (performance)
 
 **Problem.** Recharts (~108 kB) shipped in the first-load JS of all four chart

@@ -127,6 +127,8 @@ export interface Notification {
   body: string;
   read: boolean;
   createdAt: string;
+  /** Stable condition key for de-duplication (e.g. "invoices-overdue"). */
+  key?: string;
 }
 
 export interface TeamMember {

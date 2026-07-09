@@ -22,12 +22,18 @@ is absent.
 - **Definition of done:** KPI overdue/outstanding match table badges; unit tests
   cover a past-due `SENT` invoice; `npm test` + `npm run build` green.
 
-### M1 — Notifications: derive & persist from data — TODO
-- Use the store's existing `pushNotification` to persist alerts (overdue
-  invoices, runway < threshold) with de-duplication, instead of only computing
-  them on the Notifications page. Keep everything derived from real data.
-- DoD: bell count reflects persisted alerts; no duplicates on re-visit; tests for
-  the dedupe/generation helper (pure function).
+### M1 — Notifications: derive & persist from data — DONE
+- Added a pure helper `src/lib/notifications.ts` (`deriveAlerts` + `pickNewAlerts`)
+  that computes alerts (overdue invoices, runway < 6mo) from real data with a
+  stable per-condition `key`. A store action `ingestAlerts` persists only alerts
+  whose key isn't already present; `<NotificationSync />` (mounted in the shell)
+  runs it app-wide so the bell count is accurate on every page. The Notifications
+  page now renders the persisted feed instead of re-deriving inline.
+- **Verified (browser):** derived overdue alert persisted with key
+  `invoices-overdue`, bell showed 1, stayed 1 across multiple re-visits (no
+  dupes); feed rendered with Mark read / Mark all read. 9 new unit tests cover
+  `deriveAlerts` (empty/overdue/plural/runway/settings-off) and `pickNewAlerts`
+  (dedup, missing keys). `npm test` (51) + `npm run build` green.
 
 ### M2 — Performance: lazy-load charts — DONE
 - Recharts (~108 kB) was in the first-load JS of the four chart routes. Added
@@ -57,5 +63,8 @@ is absent.
   data. Research modern SaaS patterns first.
 
 ## Change log of decisions
+- 2026-07-09: M1 keys alerts by *condition* (`invoices-overdue`, `runway-low`),
+  not by value, so a persisted alert isn't duplicated when the count changes;
+  clearing notifications resets the keys and lets a fresh cycle re-notify.
 - 2026-07-09: Chose M0 as first milestone (correctness > polish; low risk, high
   trust value). See `docs/session-notes.md`.
