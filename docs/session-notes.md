@@ -3,6 +3,17 @@
 Rolling log of decisions, discoveries and rationale for future autonomous
 sessions. Newest first.
 
+## 2026-07-09 — M4: Dependency & code hygiene
+
+**Removed.** `date-fns` (unused: 0 imports in `src/`) and the dead
+`pushNotification` store action (superseded by `ingestAlerts` in M1, no callers
+left). **Kept on purpose.** `@prisma/client` has 0 `src/` imports but is the
+schema-only scaffolding for M5 (blocked) and backs the `postinstall:
+prisma generate` script — removing it would break that and the future backend.
+Every other dependency was confirmed in use. **Result.** 51 tests + build green;
+bundle unchanged (date-fns never shipped since nothing imported it), dep tree
+leaner.
+
 ## 2026-07-09 — M1: Notifications derived & persisted from data
 
 **Problem.** The Notifications page re-computed "Live" alerts inline on each

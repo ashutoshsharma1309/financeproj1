@@ -19,6 +19,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   line. It shows labeled metric placeholders and an "add your data" chart
   prompt — no invented numbers, matching the product's core rule.
 
+### Removed
+
+- Dropped the unused `date-fns` dependency and the dead `pushNotification` store
+  action (superseded by the de-duplicating `ingestAlerts`), trimming the
+  dependency tree and dead code with no behavior change.
+
 ### Fixed
 
 - Invoice overdue amounts now match the status shown in the table: `invoiceStats`

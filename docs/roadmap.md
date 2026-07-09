@@ -50,9 +50,14 @@ is absent.
   (`cashFlowSeries`, `monthOverMonth`, `monthlySeries`).
 - DoD: new tests pass in CI; no flakiness.
 
-### M4 — Dependency & code hygiene — TODO
-- Remove unused `date-fns`; audit for other dead code.
-- DoD: `npm run build` green; bundle unaffected or smaller.
+### M4 — Dependency & code hygiene — DONE
+- Removed the unused `date-fns` dependency (0 imports in `src/`) and the now-dead
+  `pushNotification` store action (replaced by `ingestAlerts` in M1; 0 callers).
+- Audited every other dependency for real usage: all in use except
+  `@prisma/client`, which is intentional schema-only scaffolding for M5 (wired to
+  the `postinstall: prisma generate` script) and kept on purpose.
+- DoD met: `npm test` (51) + `npm run build` green; bundle unchanged (date-fns
+  was never imported, so it never shipped — the win is a leaner dep tree).
 
 ### M5 — Real backend + auth — BLOCKED (needs DATABASE_URL/secrets + product decision)
 - Wire Prisma, API routes, JWT/session, argon2/bcrypt hashing, server-side RBAC.

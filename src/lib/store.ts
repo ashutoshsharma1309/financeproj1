@@ -93,7 +93,6 @@ export interface FinanceState {
   deleteChat: (id: string) => void;
 
   // notifications
-  pushNotification: (n: Omit<Notification, "id" | "createdAt" | "read">) => void;
   /** Persist freshly derived alerts, skipping any whose condition key already exists. */
   ingestAlerts: (alerts: DerivedAlert[]) => void;
   markNotificationRead: (id: string) => void;
@@ -334,18 +333,6 @@ export const useFinanceStore = create<FinanceState>()(
       deleteChat: (id) =>
         set((s) => ({ chats: s.chats.filter((c) => c.id !== id) })),
 
-      pushNotification: (n) =>
-        set((s) => ({
-          notifications: [
-            {
-              ...n,
-              id: uid("ntf"),
-              read: false,
-              createdAt: new Date().toISOString(),
-            },
-            ...s.notifications,
-          ].slice(0, 100),
-        })),
       ingestAlerts: (alerts) =>
         set((s) => {
           const fresh = pickNewAlerts(s.notifications, alerts);
