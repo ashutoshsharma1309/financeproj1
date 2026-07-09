@@ -6,6 +6,13 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Changed
+
+- Landing hero is now an honest empty-state product preview: removed the
+  floating "AI CFO" and "Insights" cards and the decorative fabricated chart
+  line. It shows labeled metric placeholders and an "add your data" chart
+  prompt — no invented numbers, matching the product's core rule.
+
 ### Fixed
 
 - Invoice overdue amounts now match the status shown in the table: `invoiceStats`
