@@ -34,6 +34,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- Test depth: new unit suites for the calculation engine — income/expense stream
+  composition, `profitMargin` guard, asset/liability roll-ups, `monthlySeries`,
+  `monthOverMonth`, `monthlyBurn`, `runwayMonths` and `cashFlowSeries` — taking
+  the suite from 51 to 69 tests.
+- Architecture Decision Records under `docs/adr/` documenting the reasoning
+  behind the key design choices, plus a dedicated Notifications guide.
 - Notifications now persist from real data: overdue-invoice and low-runway
   alerts are derived (never fabricated), de-duplicated by condition, and stored
   so the topbar bell count is accurate on every page — not just the
