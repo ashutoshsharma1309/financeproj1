@@ -23,4 +23,6 @@ AI CFO is organized into focused modules, each reachable from the sidebar.
 
 Each finance module supports full CRUD, an empty state when there's no data, and
 CSV export where applicable. See the individual guides linked from the
-[documentation index](./README.md).
+[documentation index](./README.md) — including the
+[Notifications guide](./NOTIFICATIONS.md), which explains how alerts are derived
+and de-duplicated rather than authored.
