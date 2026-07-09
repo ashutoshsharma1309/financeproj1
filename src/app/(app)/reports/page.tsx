@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Select, Field } from "@/components/ui/input";
 import { Tabs } from "@/components/ui/misc";
 import { EmptyState } from "@/components/ui/empty-state";
-import { BreakdownDonut } from "@/components/charts";
+import { BreakdownDonut } from "@/components/charts/lazy";
 import { useFinanceStore } from "@/lib/store";
 import { useFinanceData, useCurrency } from "@/hooks/use-finance-data";
 import { buildProfitLoss, hasAnyData } from "@/lib/calculations";

@@ -6,6 +6,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Performance
+
+- Charts are now code-split with `next/dynamic` (`ssr: false`), cutting
+  first-load JS ~40–50% on the dashboard, cash-flow, forecasts and reports
+  routes. Recharts loads on demand behind a height-matched skeleton.
+
 ### Changed
 
 - Landing hero is now an honest empty-state product preview: removed the

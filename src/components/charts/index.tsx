@@ -22,7 +22,6 @@ import { formatCompact, formatCurrency } from "@/lib/utils";
 const AXIS = "hsl(var(--muted-foreground))";
 const GRID = "hsl(var(--border))";
 const PRIMARY = "hsl(var(--primary))";
-const ACCENT = "hsl(var(--accent))";
 const SUCCESS = "hsl(var(--success))";
 const DANGER = "hsl(var(--danger))";
 
@@ -239,5 +238,3 @@ export function BreakdownDonut({
     </ResponsiveContainer>
   );
 }
-
-export const CHART_ACCENTS = { PRIMARY, ACCENT, SUCCESS, DANGER };

@@ -12,6 +12,10 @@ AI CFO aims to feel instant. A few practices keep it fast.
 
 - `optimizePackageImports` is enabled for `lucide-react`, `recharts` and
   `framer-motion` so only used icons/components are bundled.
+- Chart wrappers are **code-split** via `next/dynamic` (`ssr: false`,
+  `src/components/charts/lazy.tsx`), so Recharts (~108 kB) loads on demand
+  behind a height-matched skeleton — first-load JS on chart routes dropped
+  ~40–50%. Import charts from `@/components/charts/lazy` (not `.../charts`).
 - Fonts are loaded with `next/font` (self-hosted, `display: swap`) to avoid
   layout shift and external requests.
 

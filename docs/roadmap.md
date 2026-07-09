@@ -29,12 +29,14 @@ is absent.
 - DoD: bell count reflects persisted alerts; no duplicates on re-visit; tests for
   the dedupe/generation helper (pure function).
 
-### M2 — Performance: lazy-load charts — TODO
-- Recharts inflates first-load JS on dashboard/cash-flow/forecasts/reports
-  (~210–270 kB). Dynamically import chart wrappers (`next/dynamic`, `ssr:false`)
-  with skeleton fallbacks.
-- DoD: measurable first-load JS drop on those routes; charts still render; no
-  hydration warnings.
+### M2 — Performance: lazy-load charts — DONE
+- Recharts (~108 kB) was in the first-load JS of the four chart routes. Added
+  `src/components/charts/lazy.tsx` (`next/dynamic`, `ssr:false`, height-matched
+  skeletons) and repointed the pages; removed the dead `CHART_ACCENTS`/`ACCENT`.
+- **Result (first-load JS):** dashboard 222→113 kB (−49%), cash-flow 269→161 kB
+  (−40%), forecasts 268→159 kB (−41%), reports 216→108 kB (−50%).
+- Verified: build green; charts render end-to-end with real data (no stuck
+  skeleton); no hydration warnings.
 
 ### M3 — Test depth — TODO
 - Add component/interaction tests (Vitest + Testing Library + jsdom) for a

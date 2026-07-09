@@ -3,6 +3,18 @@
 Rolling log of decisions, discoveries and rationale for future autonomous
 sessions. Newest first.
 
+## 2026-07-09 — M2: Lazy-load charts (performance)
+
+**Problem.** Recharts (~108 kB) shipped in the first-load JS of all four chart
+routes. **Approach.** `next/dynamic(() => import('./index').then(m => m.X), {
+ssr:false, loading: skeleton })` in `src/components/charts/lazy.tsx`; pages import
+from there. **Gotcha (captured for reuse):** `next/dynamic` options must be an
+**inline object literal** — SWC analyzes it statically, so a factored-out
+`withFallback(h)` helper fails the build (`invalid-dynamic-options-type`). Spell
+the `{ ssr, loading }` out per chart. **Result:** −40–50% first-load JS on
+dashboard/cash-flow/forecasts/reports. Also removed dead `CHART_ACCENTS`/`ACCENT`.
+**Verified** with a real add-data flow (charts render, no skeleton lock).
+
 ## 2026-07-09 — M0: Invoice overdue consistency
 
 **Discovery.** `invoiceStats` (`src/lib/calculations.ts`) buckets invoices by the

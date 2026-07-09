@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Progress } from "@/components/ui/misc";
-import { TrendAreaChart, BreakdownDonut } from "@/components/charts";
+import { TrendAreaChart, BreakdownDonut } from "@/components/charts/lazy";
 import { useFinanceStore } from "@/lib/store";
 import { useFinanceData, useCurrency } from "@/hooks/use-finance-data";
 import {

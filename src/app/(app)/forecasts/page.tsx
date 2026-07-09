@@ -10,7 +10,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { Dialog } from "@/components/ui/dialog";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { Input, Field } from "@/components/ui/input";
-import { ForecastChart } from "@/components/charts";
+import { ForecastChart } from "@/components/charts/lazy";
 import { useToast } from "@/components/ui/toast";
 import { useFinanceStore } from "@/lib/store";
 import { useFinanceData, useCurrency } from "@/hooks/use-finance-data";
