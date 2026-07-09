@@ -21,4 +21,5 @@ Colors are CSS variables in `src/app/globals.css` and exposed to Tailwind in
 "financial terminal" look; light is a crisp cool-paper variant.
 
 See the [design system guide](./DESIGN_SYSTEM.md) for the full palette and type
-scale.
+scale. Why tokens are CSS variables (and how charts stay in sync across themes):
+[ADR 0012](./adr/0012-css-variable-design-tokens.md).
