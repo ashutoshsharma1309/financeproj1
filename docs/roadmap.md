@@ -44,16 +44,19 @@ is absent.
 - Verified: build green; charts render end-to-end with real data (no stuck
   skeleton); no hydration warnings.
 
-### M3 — Test depth — IN PROGRESS
-- **Done:** added calc edge-case coverage — `streams.test.ts` (income/expense
-  streams, profitMargin guard, asset/liability roll-ups), `monthly-series.test.ts`
-  (`monthlySeries`, `monthOverMonth`), `runway.test.ts` (`monthlyBurn`,
-  `runwayMonths`, `cashFlowSeries`). Suite grew 51 → 69 tests, all green in CI.
-  Clock-dependent functions are tested with dates relative to the current month.
-- **Remaining:** component/interaction tests (Testing Library + jsdom) for a
-  critical flow such as add-revenue. Deferred as a separate unit because it
-  introduces a new test environment (jsdom) and setup.
-- DoD: new tests pass in CI; no flakiness.
+### M3 — Test depth — DONE
+- **Calc edge cases:** `streams`, `monthly-series`, `runway` suites (streams,
+  profitMargin guard, roll-ups, windowing, burn, runway, cash-flow balances).
+- **Untested modules covered:** every Zod validator + `fieldErrors`, the AI
+  context builder / offline analyzer / system prompt, finance-store CRUD +
+  notification dedup + onboarding, and the auth store (roles, login, profile).
+- **Component/interaction layer:** added a jsdom + Testing Library harness
+  (`vitest.config.ts` env glob, `src/test/setup.ts`) and tests for the UI
+  primitives — render, prop forwarding, and interactions (click, type,
+  open/close) across Button, Input/Field/Select, Dropdown, and more.
+- **Result:** suite grew 51 → **166 tests / 34 files**, all green in CI; no
+  flakiness (clock-dependent functions use current-month-relative fixtures).
+- DoD met.
 
 ### M4 — Dependency & code hygiene — DONE
 - Removed the unused `date-fns` dependency (0 imports in `src/`) and the now-dead
