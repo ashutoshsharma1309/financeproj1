@@ -8,6 +8,12 @@ export default defineConfig({
     environmentMatchGlobs: [["src/**/*.test.tsx", "jsdom"]],
     include: ["src/**/*.test.{ts,tsx}"],
     setupFiles: ["src/test/setup.ts"],
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "html"],
+      include: ["src/lib/**", "src/components/ui/**"],
+      exclude: ["**/*.test.{ts,tsx}", "src/test/**"],
+    },
   },
   esbuild: {
     // Match Next.js: use the automatic JSX runtime so tests don't need React
