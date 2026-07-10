@@ -34,10 +34,11 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
-- Test depth: new unit suites for the calculation engine — income/expense stream
-  composition, `profitMargin` guard, asset/liability roll-ups, `monthlySeries`,
-  `monthOverMonth`, `monthlyBurn`, `runwayMonths` and `cashFlowSeries` — taking
-  the suite from 51 to 69 tests.
+- Test depth (M3 complete): coverage extended across the calculation engine,
+  every Zod validator, the AI context/insights/prompts, the finance and auth
+  stores, and — via a new jsdom + Testing Library harness — the UI primitives
+  (render + interaction). The suite grew from 51 to **166 tests across 34
+  files**.
 - Architecture Decision Records under `docs/adr/` documenting the reasoning
   behind the key design choices, plus a dedicated Notifications guide.
 - Notifications now persist from real data: overdue-invoice and low-runway
