@@ -19,6 +19,15 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   line. It shows labeled metric placeholders and an "add your data" chart
   prompt — no invented numbers, matching the product's core rule.
 
+### Fixed
+
+- `uid()` could mint **duplicate ids** when many entities were created in the
+  same tick (e.g. the 10 categories seeded at onboarding), because
+  `performance.now()` resolution is clamped in browsers. All seeded categories
+  shared one id, which silently collapsed every category breakdown (all entries
+  mapped to the first category). Added a monotonic counter so ids are unique even
+  under synchronous bulk creation, with a 500-id regression test.
+
 ### Removed
 
 - Dropped the unused `date-fns` dependency and the dead `pushNotification` store

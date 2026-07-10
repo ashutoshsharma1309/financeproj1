@@ -43,9 +43,11 @@ describe("uid", () => {
   it("prefixes the id", () => {
     expect(uid("inv").startsWith("inv_")).toBe(true);
   });
-  it("produces varying ids across many calls", () => {
-    const ids = new Set(Array.from({ length: 50 }, () => uid("x")));
-    expect(ids.size).toBeGreaterThan(1);
+  it("produces fully unique ids even when minted synchronously in bulk", () => {
+    // Regression: seeding many categories in one tick must not collide —
+    // `performance.now()` resolution is clamped, so a timestamp alone repeats.
+    const ids = new Set(Array.from({ length: 500 }, () => uid("cat")));
+    expect(ids.size).toBe(500);
   });
 });
 

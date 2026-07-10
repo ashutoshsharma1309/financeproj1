@@ -65,13 +65,18 @@ export function monthLabel(key: string) {
   }).format(new Date(y, (m || 1) - 1, 1));
 }
 
+// Monotonic counter guarantees uniqueness even for ids minted in the same tick
+// (e.g. seeding many categories synchronously) — `performance.now()` resolution
+// is clamped in browsers, so a timestamp alone collides under bulk creation.
+let uidCounter = 0;
+
 /** Collision-resistant id without external deps. */
 export function uid(prefix = "id") {
-  return `${prefix}_${Math.floor(performance.now()).toString(36)}${Math.abs(
-    (performance.now() * 1000) % 1e9,
-  )
-    .toString(36)
-    .slice(0, 6)}`;
+  uidCounter = (uidCounter + 1) % 0xffffffff;
+  const time = Math.floor(performance.now()).toString(36);
+  const count = uidCounter.toString(36);
+  const rand = Math.floor(Math.random() * 46656).toString(36); // 3 base-36 chars
+  return `${prefix}_${time}${count}${rand}`;
 }
 
 /** Clamp a number. */
