@@ -737,7 +737,8 @@ npm run dev            # http://localhost:3000
 # Quality gates
 npm run lint
 npm run typecheck
-npm test               # Vitest (40 tests)
+npm test               # Vitest (166 tests)
+npm run test:coverage  # with a v8 coverage report
 
 # Production
 npm run build
@@ -756,15 +757,25 @@ npm run start          # serves on $PORT (default 3000)
 
 ## Testing
 
-- **Framework:** Vitest (`node` environment, `@ → src` alias in `vitest.config.ts`).
-- **Location:** `src/lib/*.test.ts` (co-located).
-- **Suite (7 files, 40 tests):** `calculations.test.ts` (invoice math,
-  revenue/expense/profit, cash position, invoice stats, empty guard),
-  `utils.test.ts` (formatting, `pctChange`, `sumBy`, `clamp`, `monthKey`),
-  `security.test.ts` (RBAC matrix), `breakdown.test.ts`, `profit-loss.test.ts`,
-  `invoice-status.test.ts`, `forecast.test.ts`.
-- **Coverage focus:** the pure calculation engine and helpers. **No** component,
-  integration, or e2e tests exist yet.
+- **Framework:** Vitest with an `@ → src` alias. Pure-logic tests run in a `node`
+  environment; component tests (`*.test.tsx`) opt into `jsdom` via an
+  `environmentMatchGlobs` entry, with Testing Library and a shared
+  `src/test/setup.ts` (jest-dom matchers, RTL cleanup, `localStorage` stub).
+- **Location:** co-located as `src/**/*.test.{ts,tsx}`.
+- **Suite (34 files, 166 tests):**
+  - *Calc engine* — `calculations`, `streams`, `monthly-series`, `runway`,
+    `breakdown`, `profit-loss`, `invoice-status`, `forecast`.
+  - *Helpers & validation* — `utils`, `utils-extra`, the `*-validators` schemas
+    and `field-errors`.
+  - *AI* — `ai/context`, `ai/insights`, `ai/prompts` (offline analyzer stays
+    data-grounded; system prompt forbids fabrication).
+  - *Stores* — `store-*` (CRUD, audit, notification dedup, onboarding) and
+    `auth-*` (roles, login/logout, profile).
+  - *Components* — the UI primitives (`Button`, `Input`/`Field`/`Select`,
+    `Dropdown`, `EmptyState`, `Card`, `PageHeader`, `StatCard`, `Badge`,
+    `Skeleton`, `SkipLink`) for render + interaction.
+- **Coverage:** `npm run test:coverage` (v8) over `src/lib` and the UI
+  primitives — baseline ~66% statements / ~86% branches.
 - **Run:** `npm test` (CI runs it on every push/PR via `.github/workflows/ci.yml`).
 
 ---
