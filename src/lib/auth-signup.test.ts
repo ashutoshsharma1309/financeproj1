@@ -37,7 +37,7 @@ describe("auth store — signup", () => {
 
   it("never exposes the password hash on the public user", () => {
     useAuthStore.getState().signup({ name: "Ada", email: "ada@x.com", password: "longenough" });
-    const user = useAuthStore.getState().user as Record<string, unknown>;
+    const user = useAuthStore.getState().user as unknown as Record<string, unknown>;
     expect(user.passwordHash).toBeUndefined();
   });
 });

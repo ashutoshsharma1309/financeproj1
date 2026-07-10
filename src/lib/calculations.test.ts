@@ -10,7 +10,8 @@ import {
   invoiceStats,
   hasAnyData,
 } from "./calculations";
-import type { FinanceData, Invoice, Account } from "./types";
+import type { FinanceData } from "./calculations";
+import type { Invoice, Account } from "./types";
 
 const emptyData: FinanceData = {
   transactions: [],

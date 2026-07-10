@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { buildProfitLoss } from "./calculations";
-import type { FinanceData } from "./types";
+import type { FinanceData } from "./calculations";
 
 const data: FinanceData = {
   transactions: [],

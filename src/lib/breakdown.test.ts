@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { categoryBreakdown } from "./calculations";
-import type { Category, DatedAmount } from "./types";
+import type { DatedAmount } from "./calculations";
+import type { Category } from "./types";
 
 const categories: Category[] = [
   { id: "c1", name: "Payroll", kind: "EXPENSE", color: "#f00" },
@@ -8,8 +9,8 @@ const categories: Category[] = [
 ];
 
 const stream: DatedAmount[] = [
-  { amount: 75000, date: "2026-01-01", categoryId: "c1" },
-  { amount: 25000, date: "2026-01-02", categoryId: "c2" },
+  { amount: 75000, date: "2026-01-01", categoryId: "c1", label: "Sales" },
+  { amount: 25000, date: "2026-01-02", categoryId: "c2", label: "Services" },
 ];
 
 describe("categoryBreakdown", () => {
@@ -32,7 +33,10 @@ describe("categoryBreakdown", () => {
   });
 
   it("labels uncategorized amounts", () => {
-    const result = categoryBreakdown([{ amount: 500, date: "2026-01-01" }], categories);
+    const result = categoryBreakdown(
+      [{ amount: 500, date: "2026-01-01", label: "Misc" }],
+      categories,
+    );
     expect(result[0].name).toBe("Uncategorized");
   });
 });
