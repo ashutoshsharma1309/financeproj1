@@ -57,16 +57,18 @@ export function Sidebar({
                         onClick={onClose}
                         aria-current={active ? "page" : undefined}
                         className={cn(
-                          "group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all",
+                          "group relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
                           active
-                            ? "bg-primary text-primary-foreground shadow-soft"
-                            : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                            ? "bg-primary/10 font-medium text-primary before:absolute before:left-0 before:top-1/2 before:h-4 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-primary"
+                            : "font-medium text-muted-foreground hover:bg-muted hover:text-foreground",
                         )}
                       >
                         <Icon
                           className={cn(
-                            "h-5 w-5 shrink-0",
-                            active ? "" : "text-muted-foreground group-hover:text-foreground",
+                            "h-[18px] w-[18px] shrink-0",
+                            active
+                              ? "text-primary"
+                              : "text-muted-foreground group-hover:text-foreground",
                           )}
                         />
                         {item.label}

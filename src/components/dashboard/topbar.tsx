@@ -73,8 +73,11 @@ export function Topbar({ onMenu }: { onMenu: () => void }) {
           onFocus={() => setFocused(true)}
           onBlur={() => setTimeout(() => setFocused(false), 150)}
           placeholder="Search pages…"
-          className="h-10 w-full rounded-xl border border-input bg-surface pl-9 pr-10 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-ring/30"
+          className="h-9 w-full rounded-lg border border-input bg-surface pl-9 pr-10 text-sm outline-none transition-colors focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-ring/40"
           aria-label="Search pages"
+          role="combobox"
+          aria-expanded={focused && results.length > 0}
+          aria-controls="topbar-search-results"
         />
         <kbd
           className="pointer-events-none absolute right-3 top-1/2 hidden -translate-y-1/2 rounded-md border border-border bg-muted px-1.5 py-0.5 font-mono text-[11px] text-muted-foreground sm:block"
@@ -83,15 +86,21 @@ export function Topbar({ onMenu }: { onMenu: () => void }) {
           /
         </kbd>
         {focused && results.length > 0 && (
-          <div className="absolute left-0 right-0 top-12 z-40 overflow-hidden rounded-xl bg-surface p-1.5 shadow-clay">
+          <div
+            id="topbar-search-results"
+            role="listbox"
+            className="surface-card absolute left-0 right-0 top-11 z-40 overflow-hidden p-1 shadow-overlay animate-scale-in"
+          >
             {results.slice(0, 6).map((r) => (
               <button
                 key={r.href}
+                role="option"
+                aria-selected={false}
                 onMouseDown={() => {
                   router.push(r.href);
                   setQuery("");
                 }}
-                className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm font-medium hover:bg-muted"
+                className="flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-left text-sm font-medium hover:bg-muted"
               >
                 <r.icon className="h-4 w-4 text-muted-foreground" />
                 {r.label}
@@ -106,12 +115,14 @@ export function Topbar({ onMenu }: { onMenu: () => void }) {
 
         <Link
           href="/notifications"
-          className="relative flex h-10 w-10 items-center justify-center rounded-xl text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-          aria-label="Notifications"
+          className="relative flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          aria-label={
+            unread > 0 ? `Notifications, ${unread} unread` : "Notifications"
+          }
         >
-          <Bell className="h-5 w-5" />
+          <Bell className="h-[18px] w-[18px]" />
           {unread > 0 && (
-            <span className="absolute right-1.5 top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-danger px-1 text-[10px] font-bold text-danger-foreground">
+            <span className="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-danger px-1 text-[10px] font-bold text-danger-foreground">
               {unread > 9 ? "9+" : unread}
             </span>
           )}
@@ -120,10 +131,10 @@ export function Topbar({ onMenu }: { onMenu: () => void }) {
         <Dropdown
           trigger={
             <button
-              className="flex items-center gap-2.5 rounded-xl p-1 pr-2 transition-colors hover:bg-muted"
+              className="flex items-center gap-2.5 rounded-lg p-1 pr-2 transition-colors hover:bg-muted"
               aria-label="Account menu"
             >
-              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-accent text-sm font-semibold text-primary-foreground">
+              <span className="flex h-8 w-8 items-center justify-center rounded-md bg-primary/12 text-[13px] font-semibold text-primary">
                 {initials}
               </span>
               <span className="hidden text-left sm:block">

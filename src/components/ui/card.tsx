@@ -29,8 +29,9 @@ export function CardTitle({
   className,
   ...props
 }: React.HTMLAttributes<HTMLHeadingElement>) {
+  // h2 keeps the document outline correct: page <h1> → section <h2>.
   return (
-    <h3 className={cn("text-base font-semibold tracking-tight", className)} {...props} />
+    <h2 className={cn("text-base font-semibold tracking-tight", className)} {...props} />
   );
 }
 

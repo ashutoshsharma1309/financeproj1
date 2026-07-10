@@ -9,20 +9,21 @@ type Size = "sm" | "md" | "lg" | "icon";
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-primary text-primary-foreground font-semibold hover:shadow-glow hover:-translate-y-px shadow-soft",
-  secondary:
-    "bg-surface-2 text-foreground hover:bg-muted border border-border",
+    "bg-primary text-primary-foreground font-medium shadow-sm hover:brightness-[1.08]",
+  secondary: "bg-surface-2 text-foreground border border-border hover:bg-muted",
   ghost: "text-muted-foreground hover:bg-muted hover:text-foreground",
-  outline: "border border-border bg-surface/60 text-foreground hover:bg-muted hover:border-primary/40",
-  danger: "bg-danger text-danger-foreground font-semibold hover:brightness-110 shadow-soft",
-  success: "bg-success text-success-foreground font-semibold hover:brightness-110 shadow-soft",
+  outline: "border border-border bg-surface text-foreground hover:bg-muted",
+  danger:
+    "bg-danger text-danger-foreground font-medium shadow-sm hover:brightness-[1.08]",
+  success:
+    "bg-success text-success-foreground font-medium shadow-sm hover:brightness-[1.08]",
 };
 
 const sizes: Record<Size, string> = {
-  sm: "h-9 px-3.5 text-sm gap-1.5",
-  md: "h-11 px-5 text-sm gap-2",
-  lg: "h-[52px] px-7 text-base gap-2.5",
-  icon: "h-10 w-10",
+  sm: "h-8 px-3 text-[13px] gap-1.5",
+  md: "h-10 px-4 text-sm gap-2",
+  lg: "h-11 px-6 text-[15px] gap-2",
+  icon: "h-9 w-9",
 };
 
 export interface ButtonProps
@@ -42,7 +43,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled || loading}
         className={cn(
-          "inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]",
+          "inline-flex items-center justify-center rounded-lg font-medium transition-[background-color,box-shadow,filter,transform] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 active:scale-[0.99]",
           variants[variant],
           sizes[size],
           className,
