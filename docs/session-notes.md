@@ -3,6 +3,24 @@
 Rolling log of decisions, discoveries and rationale for future autonomous
 sessions. Newest first.
 
+## 2026-07-09 — M3 (complete): Test depth across logic + components
+
+**Broadened coverage** from the calc engine to the previously-untested layers:
+all Zod validators + `fieldErrors`, the AI context/insights/prompts, the finance
+store (CRUD, audit, notification dedup, onboarding seeding, reset), and the auth
+store (first-user-OWNER, login/logout, password-reset privacy, profile updates).
+
+**Stood up the component layer.** Added jsdom + Testing Library as devDeps and a
+`vitest.config.ts` that keeps pure-logic tests in node while opting `*.test.tsx`
+into jsdom via `environmentMatchGlobs`. Two gotchas worth remembering:
+(1) esbuild defaulted to the classic JSX runtime → "React is not defined"; fixed
+with `esbuild.jsx: "automatic"`. (2) RTL renders accumulated across tests until
+`afterEach(cleanup)` was registered in `src/test/setup.ts` (which also stubs
+`localStorage` so the persisted stores are quiet in node). Component tests assert
+on accessible roles/text and interactions, not implementation detail.
+
+**Result.** 51 → 166 tests / 34 files, all green. M3 done.
+
 ## 2026-07-09 — M3 (partial): Calc edge-case test depth
 
 **Added** three test files closing the untested gaps in the calculation engine:
