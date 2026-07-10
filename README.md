@@ -13,6 +13,8 @@ forecasts — with an AI assistant that analyzes **only your own data**. No fake
 analytics, no hardcoded metrics, no placeholder business data. Every figure is
 computed from what you enter; empty modules show elegant empty states.
 
+![AI CFO dashboard](./docs/screenshots/02-dashboard.png)
+
 ---
 
 ## ✨ Highlights
@@ -51,6 +53,19 @@ The Prisma schema, RBAC matrix, and AI route are structured so a real database
 and API can be added without UI changes. See
 [`docs/adr/`](./docs/adr/README.md) for the reasoning behind these choices and
 [`docs/roadmap.md`](./docs/roadmap.md) for what's next.
+
+## 📸 Screenshots
+
+> All figures below are computed from sample data entered into the app — nothing
+> is hardcoded.
+
+| Cash flow & runway | Reports (P&L + breakdowns) |
+| --- | --- |
+| ![Cash flow](./docs/screenshots/03-cash-flow.png) | ![Reports](./docs/screenshots/04-reports.png) |
+
+| AI assistant (grounded in your data) | Landing |
+| --- | --- |
+| ![AI assistant](./docs/screenshots/05-assistant.png) | ![Landing](./docs/screenshots/01-landing.png) |
 
 ## 🧱 Tech Stack
 
