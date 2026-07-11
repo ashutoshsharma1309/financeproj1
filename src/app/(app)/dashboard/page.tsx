@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import Link from "next/link";
 import {
   Wallet,
@@ -40,40 +41,57 @@ export default function DashboardPage() {
   const currency = useCurrency();
   const company = useFinanceStore((s) => s.company);
 
-  const has = hasAnyData(data);
-  const revenue = totalRevenue(data);
-  const expenses = totalExpenses(data);
-  const profit = netProfit(data);
-  const mom = monthOverMonth(data);
-  const series = monthlySeries(data, 12);
-  const expenseBreakdown = categoryBreakdown(expenseStream(data), data.categories).slice(0, 5);
-  const invStats = invoiceStats(data.invoices);
-
-  const recentActivity = [
-    ...data.revenues.map((r) => ({
-      id: r.id,
-      label: r.source,
-      amount: r.amount,
-      type: "INCOME" as const,
-      date: r.date,
-    })),
-    ...data.expenses.map((e) => ({
-      id: e.id,
-      label: e.vendor,
-      amount: e.amount,
-      type: "EXPENSE" as const,
-      date: e.date,
-    })),
-    ...data.transactions.map((t) => ({
-      id: t.id,
-      label: t.description,
-      amount: t.amount,
-      type: t.type,
-      date: t.date,
-    })),
-  ]
-    .sort((a, b) => +new Date(b.date) - +new Date(a.date))
-    .slice(0, 6);
+  // All metrics derive from `data` (shallow-stable), so compute once per change.
+  const {
+    has,
+    revenue,
+    expenses,
+    profit,
+    mom,
+    series,
+    expenseBreakdown,
+    invStats,
+    recentActivity,
+  } = useMemo(() => {
+    return {
+      has: hasAnyData(data),
+      revenue: totalRevenue(data),
+      expenses: totalExpenses(data),
+      profit: netProfit(data),
+      mom: monthOverMonth(data),
+      series: monthlySeries(data, 12),
+      expenseBreakdown: categoryBreakdown(
+        expenseStream(data),
+        data.categories,
+      ).slice(0, 5),
+      invStats: invoiceStats(data.invoices),
+      recentActivity: [
+        ...data.revenues.map((r) => ({
+          id: r.id,
+          label: r.source,
+          amount: r.amount,
+          type: "INCOME" as const,
+          date: r.date,
+        })),
+        ...data.expenses.map((e) => ({
+          id: e.id,
+          label: e.vendor,
+          amount: e.amount,
+          type: "EXPENSE" as const,
+          date: e.date,
+        })),
+        ...data.transactions.map((t) => ({
+          id: t.id,
+          label: t.description,
+          amount: t.amount,
+          type: t.type,
+          date: t.date,
+        })),
+      ]
+        .sort((a, b) => +new Date(b.date) - +new Date(a.date))
+        .slice(0, 6),
+    };
+  }, [data]);
 
   return (
     <div>
@@ -113,7 +131,7 @@ export default function DashboardPage() {
       ) : (
         <div className="space-y-6">
           {/* KPIs */}
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <StatCard
               label="Total Revenue"
               value={formatCurrency(revenue, currency)}
@@ -244,10 +262,10 @@ export default function DashboardPage() {
 
             <Card clay className="flex flex-col justify-between">
               <div>
-                <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/15 text-primary">
-                  <Bot className="h-6 w-6" />
+                <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <Bot className="h-[22px] w-[22px]" />
                 </span>
-                <h3 className="mt-4 text-base font-semibold">Ask your AI CFO</h3>
+                <h2 className="mt-4 text-base font-semibold">Ask your AI CFO</h2>
                 <p className="mt-1.5 text-sm text-muted-foreground">
                   Get plain-English answers about runway, spending and
                   scenarios — grounded only in these numbers.
@@ -287,7 +305,7 @@ export default function DashboardPage() {
                           {s.count} invoice(s)
                         </span>
                       </div>
-                      <p className="mt-2 text-xl font-bold tabular-nums">
+                      <p className="tnum mt-2 text-xl font-semibold">
                         {formatCurrency(s.amount, currency)}
                       </p>
                       <div className="mt-2">

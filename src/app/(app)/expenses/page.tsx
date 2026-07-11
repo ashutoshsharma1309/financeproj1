@@ -16,11 +16,9 @@ import { useToast } from "@/components/ui/toast";
 import { useFinanceStore } from "@/lib/store";
 import { useCurrency } from "@/hooks/use-finance-data";
 import { expenseSchema, fieldErrors } from "@/lib/validators";
-import { formatCurrency, formatDate, sumBy, monthKey } from "@/lib/utils";
+import { formatCurrency, formatDate, sumBy, monthKey, todayISO } from "@/lib/utils";
 import { exportToCSV } from "@/lib/export";
 import type { Expense } from "@/lib/types";
-
-const todayISO = () => new Date().toISOString().slice(0, 10);
 
 export default function ExpensesPage() {
   const currency = useCurrency();
@@ -47,12 +45,19 @@ export default function ExpensesPage() {
     notes: "",
   });
 
-  const total = sumBy(expenses, (e) => e.amount);
-  const thisMonth = sumBy(
-    expenses.filter((e) => monthKey(e.date) === monthKey(new Date())),
-    (e) => e.amount,
+  const total = React.useMemo(() => sumBy(expenses, (e) => e.amount), [expenses]);
+  const thisMonth = React.useMemo(
+    () =>
+      sumBy(
+        expenses.filter((e) => monthKey(e.date) === monthKey(new Date())),
+        (e) => e.amount,
+      ),
+    [expenses],
   );
-  const avg = expenses.length ? total / expenses.length : 0;
+  const avg = React.useMemo(
+    () => (expenses.length ? total / expenses.length : 0),
+    [total, expenses.length],
+  );
 
   function openNew() {
     setEditing(null);
@@ -158,14 +163,14 @@ export default function ExpensesPage() {
 
           <Card className="overflow-hidden p-0">
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+              <table className="w-full min-w-[640px] text-sm">
                 <thead>
                   <tr className="border-b border-border text-left text-xs uppercase tracking-wide text-muted-foreground">
-                    <th className="px-5 py-3 font-semibold">Vendor</th>
-                    <th className="px-5 py-3 font-semibold">Category</th>
-                    <th className="px-5 py-3 font-semibold">Date</th>
-                    <th className="px-5 py-3 text-right font-semibold">Amount</th>
-                    <th className="px-5 py-3" />
+                    <th scope="col" className="px-5 py-3 font-semibold">Vendor</th>
+                    <th scope="col" className="px-5 py-3 font-semibold">Category</th>
+                    <th scope="col" className="px-5 py-3 font-semibold">Date</th>
+                    <th scope="col" className="px-5 py-3 text-right font-semibold">Amount</th>
+                    <th scope="col" className="px-5 py-3" />
                   </tr>
                 </thead>
                 <tbody>

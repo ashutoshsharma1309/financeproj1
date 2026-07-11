@@ -43,7 +43,7 @@ const audiences = [
 const faqs = [
   { q: "Where do the numbers come from?", a: "Only from what you enter. AI CFO never generates sample data, fake metrics or placeholder analytics. Before you add data, you see a clear empty state — not invented figures." },
   { q: "How does the AI assistant work?", a: "It builds a factual summary of your finances and reasons strictly over it. It's built to say 'I don't have enough data' rather than fabricate. Bring a Gemini key for full generative answers; without one it computes deterministic analysis." },
-  { q: "Is my financial data secure?", a: "The architecture centers on JWT auth, role-based access control, input validation and a full audit trail. Your data stays under your control." },
+  { q: "Is my financial data secure?", a: "The architecture centers on role-based access control, input validation and a full audit trail, and it runs on your data alone. Real authentication and server-side persistence are the next milestone." },
   { q: "Can my accountant and team use it?", a: "Yes. Invite members as Owner, Accountant or Employee — each role sees exactly what it should." },
 ];
 
@@ -53,8 +53,7 @@ export default function LandingPage() {
       <StructuredData />
       {/* ── Hero ─────────────────────────────────────────────── */}
       <section className="relative overflow-hidden">
-        <div className="aurora absolute inset-0" aria-hidden />
-        <div className="grid-bg absolute inset-0 opacity-70" aria-hidden />
+        <div className="grid-bg absolute inset-0" aria-hidden />
         <div className="relative mx-auto max-w-6xl px-4 pb-24 pt-14 sm:px-6 sm:pt-20">
           <div className="grid items-center gap-14 lg:grid-cols-[1.05fr_1fr]">
             <div>
@@ -64,11 +63,10 @@ export default function LandingPage() {
                   AI-native finance for SMBs
                 </span>
               </div>
-              <h1 className="mt-6 animate-fade-up font-display text-[2.6rem] font-bold leading-[1.05] tracking-tight sm:text-6xl">
+              <h1 className="mt-6 animate-fade-up font-display text-[2.75rem] font-semibold leading-[1.05] tracking-[-0.03em] sm:text-6xl">
                 The CFO your
                 <br />
-                business{" "}
-                <span className="gradient-text">can afford.</span>
+                business <span className="text-primary">can afford.</span>
               </h1>
               <p
                 className="mt-6 max-w-xl animate-fade-up text-lg text-muted-foreground"
@@ -120,7 +118,7 @@ export default function LandingPage() {
       <section className="mx-auto max-w-6xl px-4 py-24 sm:px-6" id="features">
         <Reveal className="mx-auto max-w-2xl text-center">
           <p className="eyebrow">The stack</p>
-          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+          <h2 className="mt-3 font-display text-3xl font-semibold tracking-[-0.02em] sm:text-[2.5rem]">
             Everything a CFO does, in one place
           </h2>
           <p className="mt-4 text-muted-foreground">
@@ -131,11 +129,11 @@ export default function LandingPage() {
         <RevealGroup className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((f) => (
             <RevealItem key={f.title}>
-              <div className="surface-card group h-full p-6 transition-all duration-200 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lift">
-                <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/12 text-primary transition-transform group-hover:scale-105">
-                  <f.icon className="h-6 w-6" />
+              <div className="surface-card h-full p-6 transition-colors duration-150 hover:border-primary/30">
+                <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <f.icon className="h-[22px] w-[22px]" />
                 </span>
-                <h3 className="mt-5 font-display text-lg font-semibold">{f.title}</h3>
+                <h3 className="mt-5 font-display text-[17px] font-semibold">{f.title}</h3>
                 <p className="mt-2 text-sm text-muted-foreground">{f.desc}</p>
               </div>
             </RevealItem>
@@ -148,7 +146,7 @@ export default function LandingPage() {
         <div className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
           <Reveal className="mx-auto max-w-2xl text-center">
             <p className="eyebrow">The flow</p>
-            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+            <h2 className="mt-3 font-display text-3xl font-semibold tracking-[-0.02em] sm:text-[2.5rem]">
               Zero to clarity in three moves
             </h2>
           </Reveal>
@@ -159,8 +157,8 @@ export default function LandingPage() {
                   <span className="tnum absolute right-5 top-4 text-5xl font-bold text-primary/10">
                     {s.k}
                   </span>
-                  <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/12 text-primary">
-                    <s.icon className="h-6 w-6" />
+                  <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                    <s.icon className="h-[22px] w-[22px]" />
                   </span>
                   <h3 className="mt-5 font-display text-lg font-semibold">{s.title}</h3>
                   <p className="mt-2 text-sm text-muted-foreground">{s.desc}</p>
@@ -175,7 +173,7 @@ export default function LandingPage() {
       <section className="mx-auto max-w-5xl px-4 py-24 sm:px-6">
         <Reveal className="mx-auto max-w-2xl text-center">
           <p className="eyebrow">The difference</p>
-          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+          <h2 className="mt-3 font-display text-3xl font-semibold tracking-[-0.02em] sm:text-[2.5rem]">
             Beyond the spreadsheet
           </h2>
         </Reveal>
@@ -202,8 +200,8 @@ export default function LandingPage() {
             </div>
           </Reveal>
           <Reveal delay={0.08}>
-            <div className="clay h-full p-7 ring-1 ring-primary/30">
-              <p className="eyebrow">AI CFO</p>
+            <div className="surface-card h-full border-primary/30 bg-primary/[0.03] p-7">
+              <p className="eyebrow text-primary">AI CFO</p>
               <ul className="mt-5 space-y-3 text-sm">
                 {[
                   "Totals and margins always in sync",
@@ -227,7 +225,7 @@ export default function LandingPage() {
       <section className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
         <Reveal className="mx-auto max-w-2xl text-center">
           <p className="eyebrow">Built for you</p>
-          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+          <h2 className="mt-3 font-display text-3xl font-semibold tracking-[-0.02em] sm:text-[2.5rem]">
             However you run the money
           </h2>
         </Reveal>
@@ -257,12 +255,12 @@ export default function LandingPage() {
         <div className="mx-auto grid max-w-6xl gap-5 px-4 py-16 sm:px-6 md:grid-cols-3">
           {[
             { icon: ShieldCheck, title: "Only your data", desc: "No fabricated analytics — every insight traces to an entry you made." },
-            { icon: Lock, title: "Secure by design", desc: "JWT auth, role-based access, validation and a full audit trail." },
+            { icon: Lock, title: "Secure by design", desc: "Role-based access, input validation and a full audit trail on every change." },
             { icon: Sparkles, title: "AI you can trust", desc: "The assistant reasons over your numbers, or admits it can't." },
           ].map((t) => (
             <Reveal key={t.title}>
               <div className="flex gap-4">
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/12 text-primary">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
                   <t.icon className="h-5 w-5" />
                 </span>
                 <div>
@@ -279,7 +277,7 @@ export default function LandingPage() {
       <section className="mx-auto max-w-3xl px-4 py-24 sm:px-6">
         <Reveal className="text-center">
           <p className="eyebrow">Questions</p>
-          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+          <h2 className="mt-3 font-display text-3xl font-semibold tracking-[-0.02em] sm:text-[2.5rem]">
             Straight answers
           </h2>
         </Reveal>
@@ -305,11 +303,10 @@ export default function LandingPage() {
       {/* ── CTA ──────────────────────────────────────────────── */}
       <section className="mx-auto max-w-6xl px-4 pb-24 sm:px-6">
         <Reveal>
-          <div className="clay relative overflow-hidden px-6 py-16 text-center sm:px-12">
-            <div className="aurora absolute inset-0 opacity-80" aria-hidden />
-            <div className="grid-bg absolute inset-0 opacity-40" aria-hidden />
+          <div className="surface-card relative overflow-hidden bg-surface-2/50 px-6 py-16 text-center sm:px-12">
+            <div className="grid-bg absolute inset-0" aria-hidden />
             <div className="relative">
-              <h2 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">
+              <h2 className="font-display text-3xl font-semibold tracking-[-0.02em] sm:text-[2.5rem]">
                 Take control of your finances today
               </h2>
               <p className="mx-auto mt-4 max-w-xl text-muted-foreground">

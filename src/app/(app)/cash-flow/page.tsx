@@ -53,10 +53,10 @@ export default function CashFlowPage() {
   const [errors, setErrors] = React.useState<Record<string, string>>({});
   const [form, setForm] = React.useState({ name: "", kind: "BANK" as AccountKind, balance: "" });
 
-  const cash = cashPosition(accounts);
-  const burn = monthlyBurn(data);
-  const runway = runwayMonths(data);
-  const series = cashFlowSeries(data, 12);
+  const cash = React.useMemo(() => cashPosition(accounts), [accounts]);
+  const burn = React.useMemo(() => monthlyBurn(data), [data]);
+  const runway = React.useMemo(() => runwayMonths(data), [data]);
+  const series = React.useMemo(() => cashFlowSeries(data, 12), [data]);
   const hasFlow = hasAnyData(data);
 
   function openNew() {
@@ -115,7 +115,7 @@ export default function CashFlowPage() {
         />
       ) : (
         <div className="space-y-6">
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <StatCard label="Cash position" value={formatCurrency(cash, currency)} icon={Wallet} tone={cash >= 0 ? "success" : "danger"} delta={null} />
             <StatCard label="Monthly net" value={formatCurrency(burn, currency)} icon={TrendingDown} tone={burn >= 0 ? "success" : "warning"} delta={null} hint="Recent average" />
             <StatCard label="Runway" value={Number.isFinite(runway) ? `${runway.toFixed(1)} mo` : "∞"} icon={Timer} tone={Number.isFinite(runway) && runway < 6 ? "danger" : "primary"} delta={null} hint={Number.isFinite(runway) ? "At current burn" : "Cash-flow positive"} />

@@ -25,15 +25,11 @@ import { useToast } from "@/components/ui/toast";
 import { useFinanceStore } from "@/lib/store";
 import { useCurrency } from "@/hooks/use-finance-data";
 import { invoiceSchema, fieldErrors } from "@/lib/validators";
-import { formatCurrency, formatDate, uid } from "@/lib/utils";
+import { formatCurrency, formatDate, uid, todayISO, plusDaysISO } from "@/lib/utils";
 import { invoiceSubtotal, invoiceTax, invoiceTotal, invoiceStats, effectiveInvoiceStatus } from "@/lib/calculations";
 import { exportToPDF } from "@/lib/export";
 import { INVOICE_STATUSES } from "@/lib/constants";
 import type { Invoice, InvoiceItem, InvoiceStatus } from "@/lib/types";
-
-const todayISO = () => new Date().toISOString().slice(0, 10);
-const plusDays = (n: number) =>
-  new Date(Date.now() + n * 86400000).toISOString().slice(0, 10);
 
 const statusTone: Record<InvoiceStatus, "neutral" | "primary" | "success" | "warning" | "danger"> = {
   DRAFT: "neutral",
@@ -61,7 +57,7 @@ function blankForm(nextNumber: string): FormState {
     clientName: "",
     clientEmail: "",
     issueDate: todayISO(),
-    dueDate: plusDays(30),
+    dueDate: plusDaysISO(30),
     status: "DRAFT",
     taxRate: "0",
     notes: "",
@@ -85,11 +81,17 @@ export default function InvoicesPage() {
   const [errors, setErrors] = React.useState<Record<string, string>>({});
   const [form, setForm] = React.useState<FormState>(blankForm("INV-0001"));
 
-  const stats = invoiceStats(invoices);
+  const stats = React.useMemo(() => invoiceStats(invoices), [invoices]);
   const nextNumber = `INV-${String(invoices.length + 1).padStart(4, "0")}`;
 
-  const previewSubtotal = form.items.reduce((a, i) => a + i.quantity * i.unitPrice, 0);
-  const previewTax = previewSubtotal * (Number(form.taxRate) || 0) / 100;
+  const previewSubtotal = React.useMemo(
+    () => form.items.reduce((a, i) => a + i.quantity * i.unitPrice, 0),
+    [form.items],
+  );
+  const previewTax = React.useMemo(
+    () => (previewSubtotal * (Number(form.taxRate) || 0)) / 100,
+    [previewSubtotal, form.taxRate],
+  );
 
   function openNew() {
     setEditing(null);
@@ -235,15 +237,15 @@ export default function InvoicesPage() {
 
           <Card className="overflow-hidden p-0">
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+              <table className="w-full min-w-[720px] text-sm">
                 <thead>
                   <tr className="border-b border-border text-left text-xs uppercase tracking-wide text-muted-foreground">
-                    <th className="px-5 py-3 font-semibold">Invoice</th>
-                    <th className="px-5 py-3 font-semibold">Client</th>
-                    <th className="px-5 py-3 font-semibold">Due</th>
-                    <th className="px-5 py-3 font-semibold">Status</th>
-                    <th className="px-5 py-3 text-right font-semibold">Total</th>
-                    <th className="px-5 py-3" />
+                    <th scope="col" className="px-5 py-3 font-semibold">Invoice</th>
+                    <th scope="col" className="px-5 py-3 font-semibold">Client</th>
+                    <th scope="col" className="px-5 py-3 font-semibold">Due</th>
+                    <th scope="col" className="px-5 py-3 font-semibold">Status</th>
+                    <th scope="col" className="px-5 py-3 text-right font-semibold">Total</th>
+                    <th scope="col" className="px-5 py-3" />
                   </tr>
                 </thead>
                 <tbody>

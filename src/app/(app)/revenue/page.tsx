@@ -16,11 +16,9 @@ import { useToast } from "@/components/ui/toast";
 import { useFinanceStore } from "@/lib/store";
 import { useCurrency } from "@/hooks/use-finance-data";
 import { revenueSchema, fieldErrors } from "@/lib/validators";
-import { formatCurrency, formatDate, sumBy, monthKey } from "@/lib/utils";
+import { formatCurrency, formatDate, sumBy, monthKey, todayISO } from "@/lib/utils";
 import { exportToCSV } from "@/lib/export";
 import type { Revenue } from "@/lib/types";
-
-const todayISO = () => new Date().toISOString().slice(0, 10);
 
 export default function RevenuePage() {
   const currency = useCurrency();
@@ -47,10 +45,14 @@ export default function RevenuePage() {
     notes: "",
   });
 
-  const total = sumBy(revenues, (r) => r.amount);
-  const thisMonth = sumBy(
-    revenues.filter((r) => monthKey(r.date) === monthKey(new Date())),
-    (r) => r.amount,
+  const total = React.useMemo(() => sumBy(revenues, (r) => r.amount), [revenues]);
+  const thisMonth = React.useMemo(
+    () =>
+      sumBy(
+        revenues.filter((r) => monthKey(r.date) === monthKey(new Date())),
+        (r) => r.amount,
+      ),
+    [revenues],
   );
 
   function openNew() {
@@ -157,14 +159,14 @@ export default function RevenuePage() {
 
           <Card className="overflow-hidden p-0">
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+              <table className="w-full min-w-[640px] text-sm">
                 <thead>
                   <tr className="border-b border-border text-left text-xs uppercase tracking-wide text-muted-foreground">
-                    <th className="px-5 py-3 font-semibold">Source</th>
-                    <th className="px-5 py-3 font-semibold">Category</th>
-                    <th className="px-5 py-3 font-semibold">Date</th>
-                    <th className="px-5 py-3 text-right font-semibold">Amount</th>
-                    <th className="px-5 py-3" />
+                    <th scope="col" className="px-5 py-3 font-semibold">Source</th>
+                    <th scope="col" className="px-5 py-3 font-semibold">Category</th>
+                    <th scope="col" className="px-5 py-3 font-semibold">Date</th>
+                    <th scope="col" className="px-5 py-3 text-right font-semibold">Amount</th>
+                    <th scope="col" className="px-5 py-3" />
                   </tr>
                 </thead>
                 <tbody>

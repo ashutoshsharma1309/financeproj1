@@ -229,6 +229,16 @@ body {
     background-size: 24px 24px;
   }
 
+  /* A single, restrained ambient wash — one faint radial from the top. */
+  .mesh-bg {
+    position: relative;
+    background-image: radial-gradient(
+      60% 50% at 50% 0%,
+      hsl(var(--primary) / 0.05),
+      transparent 70%
+    );
+  }
+
   /* Skeleton shimmer */
   .skeleton {
     position: relative;

@@ -25,10 +25,10 @@ export default function AuthLayout({
             {[
               { icon: TrendingUp, text: "Live revenue, expense & cash insights" },
               { icon: Sparkles, text: "An AI CFO grounded only in your numbers" },
-              { icon: ShieldCheck, text: "Secure by design — JWT, RBAC & audit logs" },
+              { icon: ShieldCheck, text: "Role-based access & a full audit trail" },
             ].map((f) => (
               <li key={f.text} className="flex items-center gap-3">
-                <span className="clay-sm flex h-10 w-10 items-center justify-center rounded-xl text-primary">
+                <span className="surface-2 flex h-10 w-10 items-center justify-center text-primary">
                   <f.icon className="h-5 w-5" />
                 </span>
                 <span className="text-sm font-medium">{f.text}</span>

@@ -40,7 +40,10 @@ export default function ForecastsPage() {
   });
 
   const selected = forecasts.find((f) => f.id === selectedId) ?? forecasts[0] ?? null;
-  const projection = selected ? projectForecast(selected, data) : [];
+  const projection = React.useMemo(
+    () => (selected ? projectForecast(selected, data) : []),
+    [selected, data],
+  );
   const endCash = projection.at(-1)?.cash ?? 0;
   const hasBaseline = hasAnyData(data);
 

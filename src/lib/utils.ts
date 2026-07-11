@@ -100,6 +100,18 @@ export function sanitize(input: string) {
   return input.replace(/[<>]/g, "").trim();
 }
 
+/** Today's date as a YYYY-MM-DD string (for date inputs). */
+export function todayISO() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+/** A YYYY-MM-DD string `days` from today (e.g. an invoice due date). */
+export function plusDaysISO(days: number) {
+  const d = new Date();
+  d.setDate(d.getDate() + days);
+  return d.toISOString().slice(0, 10);
+}
+
 /** Download a text blob as a file (client only). */
 export function downloadFile(filename: string, content: string, mime: string) {
   const blob = new Blob([content], { type: mime });

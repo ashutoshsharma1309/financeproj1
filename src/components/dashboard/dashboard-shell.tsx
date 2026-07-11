@@ -28,8 +28,12 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
   // Loading gate while persisted state rehydrates.
   if (!hydrated || !user) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <Loader2 className="h-6 w-6 animate-spin text-primary" />
+      <div
+        className="flex min-h-screen items-center justify-center bg-background"
+        role="status"
+        aria-label="Loading your workspace"
+      >
+        <Loader2 className="h-6 w-6 animate-spin text-primary" aria-hidden />
       </div>
     );
   }

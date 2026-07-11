@@ -101,7 +101,7 @@ export default function AssistantPage() {
         }
       />
 
-      <div className="flex h-[calc(100vh-13rem)] flex-col surface-card p-0">
+      <div className="surface-card flex h-[calc(100dvh-13rem)] min-h-[460px] flex-col p-0">
         {/* Messages */}
         <div ref={scrollRef} className="flex-1 space-y-5 overflow-y-auto p-5 sm:p-6">
           {messages.length === 0 ? (
@@ -135,13 +135,17 @@ export default function AssistantPage() {
               >
                 <span
                   className={cn(
-                    "flex h-9 w-9 shrink-0 items-center justify-center rounded-xl",
+                    "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg",
                     m.role === "user"
                       ? "bg-muted text-foreground"
-                      : "bg-primary/15 text-primary",
+                      : "bg-primary/10 text-primary",
                   )}
                 >
-                  {m.role === "user" ? <User className="h-5 w-5" /> : <Bot className="h-5 w-5" />}
+                  {m.role === "user" ? (
+                    <User className="h-5 w-5" aria-hidden />
+                  ) : (
+                    <Bot className="h-5 w-5" aria-hidden />
+                  )}
                 </span>
                 <div
                   className={cn(
@@ -162,11 +166,12 @@ export default function AssistantPage() {
           )}
 
           {loading && (
-            <div className="flex gap-3">
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
-                <Bot className="h-5 w-5" />
+            <div className="flex gap-3" role="status">
+              <span className="sr-only">The assistant is thinking…</span>
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <Bot className="h-5 w-5" aria-hidden />
               </span>
-              <div className="flex items-center gap-1.5 rounded-2xl bg-muted px-4 py-4">
+              <div className="flex items-center gap-1.5 rounded-xl bg-muted px-4 py-4">
                 {[0, 1, 2].map((i) => (
                   <span
                     key={i}
@@ -199,10 +204,18 @@ export default function AssistantPage() {
               }}
               placeholder="Ask about runway, spending, hiring, or run a what-if…"
               rows={1}
-              className="max-h-32 min-h-[44px] flex-1 resize-none rounded-xl border border-input bg-surface px-4 py-3 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-ring/30"
+              aria-label="Ask the AI CFO a question"
+              className="max-h-32 min-h-[40px] flex-1 resize-none rounded-lg border border-input bg-surface px-3.5 py-2.5 text-sm outline-none transition-colors focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-ring/40"
             />
-            <Button type="submit" size="icon" className="h-11 w-11" loading={loading} disabled={!input.trim()}>
-              {!loading && <Send className="h-5 w-5" />}
+            <Button
+              type="submit"
+              size="icon"
+              className="h-10 w-10"
+              loading={loading}
+              disabled={!input.trim()}
+              aria-label="Send message"
+            >
+              {!loading && <Send className="h-[18px] w-[18px]" />}
             </Button>
           </form>
           <p className="mt-2 flex items-center gap-1.5 text-xs text-muted-foreground">

@@ -38,10 +38,13 @@ export default function ReportsPage() {
   const data = useFinanceData();
   const company = useFinanceStore((s) => s.company);
   const [period, setPeriod] = React.useState<Period>("ALL");
-  const [reportType, setReportType] = React.useState("PL");
+  const [reportType, setReportType] = React.useState<"PL" | "BREAKDOWN">("PL");
 
-  const range = periodRange(period);
-  const pl = buildProfitLoss(data, range.from, range.to);
+  const range = React.useMemo(() => periodRange(period), [period]);
+  const pl = React.useMemo(
+    () => buildProfitLoss(data, range.from, range.to),
+    [data, range],
+  );
   const has = hasAnyData(data);
 
   function exportPDF() {
@@ -124,7 +127,7 @@ export default function ReportsPage() {
                 { value: "BREAKDOWN", label: "Breakdown" },
               ]}
               value={reportType}
-              onValueChange={setReportType}
+              onValueChange={(v) => setReportType(v as "PL" | "BREAKDOWN")}
             />
             <Field label="" className="sm:w-52">
               <Select value={period} onChange={(e) => setPeriod(e.target.value as Period)} aria-label="Period">
@@ -138,7 +141,7 @@ export default function ReportsPage() {
 
           {reportType === "PL" ? (
             <>
-              <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {[
                   { label: "Total income", value: pl.totalIncome, tone: "text-success" },
                   { label: "Total expenses", value: pl.totalExpense, tone: "text-danger" },

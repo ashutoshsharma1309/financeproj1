@@ -91,7 +91,7 @@ export default function TeamPage() {
           <Card key={r} className="p-4">
             <div className="flex items-center gap-2">
               <Shield className="h-4 w-4 text-primary" />
-              <p className="font-medium">{ROLE_LABELS[r]}</p>
+              <p className="font-semibold">{ROLE_LABELS[r]}</p>
             </div>
             <p className="mt-1.5 text-sm text-muted-foreground">{ROLE_DESCRIPTIONS[r]}</p>
           </Card>
@@ -108,14 +108,14 @@ export default function TeamPage() {
       ) : (
         <Card className="overflow-hidden p-0">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full min-w-[640px] text-sm">
               <thead>
                 <tr className="border-b border-border text-left text-xs uppercase tracking-wide text-muted-foreground">
-                  <th className="px-5 py-3 font-semibold">Member</th>
-                  <th className="px-5 py-3 font-semibold">Role</th>
-                  <th className="px-5 py-3 font-semibold">Status</th>
-                  <th className="px-5 py-3 font-semibold">Added</th>
-                  <th className="px-5 py-3" />
+                  <th scope="col" className="px-5 py-3 font-semibold">Member</th>
+                  <th scope="col" className="px-5 py-3 font-semibold">Role</th>
+                  <th scope="col" className="px-5 py-3 font-semibold">Status</th>
+                  <th scope="col" className="px-5 py-3 font-semibold">Added</th>
+                  <th scope="col" className="px-5 py-3" />
                 </tr>
               </thead>
               <tbody>
@@ -143,7 +143,7 @@ export default function TeamPage() {
                           <Select
                             value={m.role}
                             onChange={(e) => updateMember(m.id, { role: e.target.value as Role })}
-                            className="h-9 w-40"
+                            className="h-9 w-full sm:w-40"
                             aria-label="Change role"
                           >
                             {(["OWNER", "ACCOUNTANT", "EMPLOYEE"] as Role[]).map((r) => (

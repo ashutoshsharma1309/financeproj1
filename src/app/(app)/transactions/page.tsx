@@ -27,11 +27,9 @@ import { useToast } from "@/components/ui/toast";
 import { useFinanceStore } from "@/lib/store";
 import { useCurrency } from "@/hooks/use-finance-data";
 import { transactionSchema, fieldErrors } from "@/lib/validators";
-import { formatCurrency, formatDate, sumBy } from "@/lib/utils";
+import { formatCurrency, formatDate, sumBy, todayISO } from "@/lib/utils";
 import { exportToCSV } from "@/lib/export";
 import type { Transaction } from "@/lib/types";
-
-const todayISO = () => new Date().toISOString().slice(0, 10);
 
 export default function TransactionsPage() {
   const currency = useCurrency();
@@ -47,7 +45,7 @@ export default function TransactionsPage() {
   const [editing, setEditing] = React.useState<Transaction | null>(null);
   const [toDelete, setToDelete] = React.useState<string | null>(null);
   const [errors, setErrors] = React.useState<Record<string, string>>({});
-  const [filter, setFilter] = React.useState("ALL");
+  const [filter, setFilter] = React.useState<"ALL" | "INCOME" | "EXPENSE">("ALL");
   const [query, setQuery] = React.useState("");
   const [form, setForm] = React.useState({
     type: "EXPENSE" as "INCOME" | "EXPENSE",
@@ -58,14 +56,24 @@ export default function TransactionsPage() {
     accountId: "",
   });
 
-  const income = sumBy(transactions.filter((t) => t.type === "INCOME"), (t) => t.amount);
-  const expense = sumBy(transactions.filter((t) => t.type === "EXPENSE"), (t) => t.amount);
+  const income = React.useMemo(
+    () => sumBy(transactions.filter((t) => t.type === "INCOME"), (t) => t.amount),
+    [transactions],
+  );
+  const expense = React.useMemo(
+    () => sumBy(transactions.filter((t) => t.type === "EXPENSE"), (t) => t.amount),
+    [transactions],
+  );
 
-  const filtered = transactions
-    .filter((t) => (filter === "ALL" ? true : t.type === filter))
-    .filter((t) =>
-      query ? t.description.toLowerCase().includes(query.toLowerCase()) : true,
-    );
+  const filtered = React.useMemo(
+    () =>
+      transactions
+        .filter((t) => (filter === "ALL" ? true : t.type === filter))
+        .filter((t) =>
+          query ? t.description.toLowerCase().includes(query.toLowerCase()) : true,
+        ),
+    [transactions, filter, query],
+  );
 
   const formCategories = categories.filter(
     (c) => c.kind === (form.type === "INCOME" ? "INCOME" : "EXPENSE"),
@@ -183,7 +191,7 @@ export default function TransactionsPage() {
                 { value: "EXPENSE", label: "Expense" },
               ]}
               value={filter}
-              onValueChange={setFilter}
+              onValueChange={(v) => setFilter(v as "ALL" | "INCOME" | "EXPENSE")}
             />
             <div className="relative sm:w-64">
               <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -198,14 +206,14 @@ export default function TransactionsPage() {
 
           <Card className="overflow-hidden p-0">
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+              <table className="w-full min-w-[640px] text-sm">
                 <thead>
                   <tr className="border-b border-border text-left text-xs uppercase tracking-wide text-muted-foreground">
-                    <th className="px-5 py-3 font-semibold">Description</th>
-                    <th className="px-5 py-3 font-semibold">Category</th>
-                    <th className="px-5 py-3 font-semibold">Date</th>
-                    <th className="px-5 py-3 text-right font-semibold">Amount</th>
-                    <th className="px-5 py-3" />
+                    <th scope="col" className="px-5 py-3 font-semibold">Description</th>
+                    <th scope="col" className="px-5 py-3 font-semibold">Category</th>
+                    <th scope="col" className="px-5 py-3 font-semibold">Date</th>
+                    <th scope="col" className="px-5 py-3 text-right font-semibold">Amount</th>
+                    <th scope="col" className="px-5 py-3" />
                   </tr>
                 </thead>
                 <tbody>
