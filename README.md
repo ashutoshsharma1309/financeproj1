@@ -13,7 +13,7 @@ forecasts — with an AI assistant that analyzes **only your own data**. No fake
 analytics, no hardcoded metrics, no placeholder business data. Every figure is
 computed from what you enter; empty modules show elegant empty states.
 
-![AI CFO dashboard](./docs/screenshots/02-dashboard.png)
+![AI CFO landing](./docs/screenshots/01-landing.png)
 
 ---
 
@@ -56,16 +56,13 @@ and API can be added without UI changes. See
 
 ## 📸 Screenshots
 
-> All figures below are computed from sample data entered into the app — nothing
-> is hardcoded.
+> Everything the app shows is computed from data you enter — nothing is
+> hardcoded. Run it locally or open the live demo to explore the dashboard,
+> cash flow, reports and AI assistant.
 
-| Cash flow & runway | Reports (P&L + breakdowns) |
+| Landing | Sign in |
 | --- | --- |
-| ![Cash flow](./docs/screenshots/03-cash-flow.png) | ![Reports](./docs/screenshots/04-reports.png) |
-
-| AI assistant (grounded in your data) | Landing |
-| --- | --- |
-| ![AI assistant](./docs/screenshots/05-assistant.png) | ![Landing](./docs/screenshots/01-landing.png) |
+| ![Landing](./docs/screenshots/01-landing.png) | ![Sign in](./docs/screenshots/06-login.png) |
 
 ## 🧱 Tech Stack
 
