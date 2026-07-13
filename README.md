@@ -119,13 +119,19 @@ designed to pass with empty secrets — the app degrades gracefully.
 ## 🔐 Environment Variables
 
 **None are required to run the app.** Only these are read by the current
-codebase:
+codebase. The AI assistant uses a provider chain — **OpenAI → Gemini → offline
+analyzer** — so any one key (or none) works:
 
 | Variable | Used by | Effect |
 | -------- | ------- | ------ |
-| `GEMINI_API_KEY` | AI route | Enables live Gemini answers; without it, the offline analyzer is used |
+| `OPENAI_API_KEY` | AI route | Preferred provider. Live answers via OpenAI |
+| `OPENAI_MODEL` | AI route | Model name (default `gpt-4o-mini`) |
+| `GEMINI_API_KEY` | AI route | Used if OpenAI isn't set. Live answers via Gemini |
 | `GEMINI_MODEL` | AI route | Model name (default `gemini-1.5-flash`) |
 | `NEXT_PUBLIC_APP_URL` | SEO metadata | Canonical/OG base URL when deployed |
+
+With no key, the assistant answers from a deterministic analyzer over the same
+financial context — it never fabricates figures.
 
 Without `GEMINI_API_KEY`, the assistant answers using a deterministic analyzer
 that reasons over the same financial context — so it never fabricates figures.

@@ -12,10 +12,13 @@ data. It never fabricates figures.
 3. The route (`src/app/api/ai/chat/route.ts`):
    - validates the payload,
    - applies rate limiting,
-   - if `GEMINI_API_KEY` is set, calls Gemini with a system prompt that forbids
-     inventing data (`src/lib/ai/gemini.ts`),
-   - otherwise falls back to a deterministic analyzer (`src/lib/ai/insights.ts`)
-     that computes the answer directly from the context.
+   - runs a **provider chain**: OpenAI (`src/lib/ai/openai.ts`, used when
+     `OPENAI_API_KEY` is set) → Gemini (`src/lib/ai/gemini.ts`, used when
+     `GEMINI_API_KEY` is set) → the deterministic analyzer
+     (`src/lib/ai/insights.ts`). Each is given a system prompt that forbids
+     inventing data,
+   - if a configured provider errors (e.g. quota exhausted), it falls through to
+     the next, so the assistant always returns a grounded answer.
 
 ## Grounding rules
 
@@ -25,8 +28,12 @@ data. It never fabricates figures.
 
 ## Enabling generative answers
 
-Set `GEMINI_API_KEY` (and optionally `GEMINI_MODEL`) in your environment. With no
-key, the assistant still returns useful, data-grounded responses.
+Set `OPENAI_API_KEY` (optionally `OPENAI_MODEL`, default `gpt-4o-mini`) **or**
+`GEMINI_API_KEY` in your environment (`.env`, git-ignored). OpenAI is preferred
+when both are present. With no key, the assistant still returns useful,
+data-grounded responses. Note the provider account must have available quota —
+a `429 insufficient_quota` from OpenAI falls through to Gemini or the local
+analyzer.
 
 ## See also
 

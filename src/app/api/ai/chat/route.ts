@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { SYSTEM_PROMPT, buildUserPrompt } from "@/lib/ai/prompts";
+import { generateWithOpenAI, isOpenAIConfigured } from "@/lib/ai/openai";
 import { generateWithGemini, isGeminiConfigured } from "@/lib/ai/gemini";
 import { localAnalysis } from "@/lib/ai/insights";
 import type { FinancialContext } from "@/lib/ai/context";
@@ -47,26 +48,42 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // If Gemini is configured, use it — grounded strictly in the provided context.
+  const userPrompt = buildUserPrompt(question, context);
+
+  // Provider chain: OpenAI → Gemini → deterministic local analysis. Each is
+  // grounded strictly in the provided context; on a provider error we fall
+  // through to the next so the assistant always answers.
+  const providers: { mode: string; run: () => Promise<string> }[] = [];
+  if (isOpenAIConfigured()) {
+    providers.push({
+      mode: "openai",
+      run: () => generateWithOpenAI(SYSTEM_PROMPT, userPrompt),
+    });
+  }
   if (isGeminiConfigured()) {
+    providers.push({
+      mode: "gemini",
+      run: () => generateWithGemini(SYSTEM_PROMPT, userPrompt),
+    });
+  }
+
+  let lastError: string | undefined;
+  for (const provider of providers) {
     try {
-      const answer = await generateWithGemini(
-        SYSTEM_PROMPT,
-        buildUserPrompt(question, context),
-      );
-      return NextResponse.json({ answer, mode: "gemini" });
+      const answer = await provider.run();
+      return NextResponse.json({ answer, mode: provider.mode });
     } catch (err) {
-      // Fall through to local analysis on provider failure.
-      const answer = localAnalysis(question, context);
-      return NextResponse.json({
-        answer,
-        mode: "local",
-        note: err instanceof Error ? err.message : "AI provider unavailable",
-      });
+      lastError = err instanceof Error ? err.message : "AI provider unavailable";
+      // Try the next provider (or fall through to local analysis).
     }
   }
 
-  // No key configured — deterministic analysis grounded in the same context.
+  // No key configured, or every provider failed — deterministic analysis
+  // grounded in the same context so the assistant never fabricates figures.
   const answer = localAnalysis(question, context);
-  return NextResponse.json({ answer, mode: "local" });
+  return NextResponse.json(
+    lastError
+      ? { answer, mode: "local", note: lastError }
+      : { answer, mode: "local" },
+  );
 }
