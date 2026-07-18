@@ -6,6 +6,7 @@ import { Sidebar } from "./sidebar";
 import { Topbar } from "./topbar";
 import { Onboarding } from "./onboarding";
 import { NotificationSync } from "./notification-sync";
+import { ChatWidget } from "@/components/assistant/chat-widget";
 import { SkipLink } from "@/components/ui/skip-link";
 import { useAuthStore } from "@/lib/auth";
 import { useFinanceStore } from "@/lib/store";
@@ -53,6 +54,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
           <div className="animate-fade-in">{children}</div>
         </main>
       </div>
+      <ChatWidget />
     </div>
   );
 }
