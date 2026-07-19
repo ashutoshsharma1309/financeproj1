@@ -3,9 +3,8 @@
 import * as React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input, Field } from "@/components/ui/input";
+import { Input, PasswordInput, Field } from "@/components/ui/input";
 import { useToast } from "@/components/ui/toast";
 import { useAuthStore } from "@/lib/auth";
 import { loginSchema, fieldErrors } from "@/lib/validators";
@@ -16,7 +15,6 @@ export default function LoginPage() {
   const login = useAuthStore((s) => s.login);
   const [form, setForm] = React.useState({ email: "", password: "" });
   const [errors, setErrors] = React.useState<Record<string, string>>({});
-  const [showPw, setShowPw] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
 
   function onSubmit(e: React.FormEvent) {
@@ -58,27 +56,15 @@ export default function LoginPage() {
           />
         </Field>
         <Field label="Password" htmlFor="password" error={errors.password}>
-          <div className="relative">
-            <Input
-              id="password"
-              type={showPw ? "text" : "password"}
-              autoComplete="current-password"
-              value={form.password}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, password: e.target.value }))
-              }
-              placeholder="••••••••"
-              className="pr-11"
-            />
-            <button
-              type="button"
-              onClick={() => setShowPw((v) => !v)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-              aria-label={showPw ? "Hide password" : "Show password"}
-            >
-              {showPw ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-            </button>
-          </div>
+          <PasswordInput
+            id="password"
+            autoComplete="current-password"
+            value={form.password}
+            onChange={(e) =>
+              setForm((f) => ({ ...f, password: e.target.value }))
+            }
+            placeholder="••••••••"
+          />
         </Field>
 
         <div className="flex justify-end">

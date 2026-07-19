@@ -3,9 +3,9 @@
 import * as React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Eye, EyeOff, Check } from "lucide-react";
+import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input, Field } from "@/components/ui/input";
+import { Input, PasswordInput, Field } from "@/components/ui/input";
 import { useToast } from "@/components/ui/toast";
 import { useAuthStore } from "@/lib/auth";
 import { signupSchema, fieldErrors } from "@/lib/validators";
@@ -31,7 +31,6 @@ export default function SignupPage() {
     confirm: "",
   });
   const [errors, setErrors] = React.useState<Record<string, string>>({});
-  const [showPw, setShowPw] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
 
   const pwScore = strength(form.password);
@@ -94,27 +93,15 @@ export default function SignupPage() {
           />
         </Field>
         <Field label="Password" htmlFor="password" error={errors.password}>
-          <div className="relative">
-            <Input
-              id="password"
-              type={showPw ? "text" : "password"}
-              autoComplete="new-password"
-              value={form.password}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, password: e.target.value }))
-              }
-              placeholder="At least 8 characters"
-              className="pr-11"
-            />
-            <button
-              type="button"
-              onClick={() => setShowPw((v) => !v)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-              aria-label={showPw ? "Hide password" : "Show password"}
-            >
-              {showPw ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-            </button>
-          </div>
+          <PasswordInput
+            id="password"
+            autoComplete="new-password"
+            value={form.password}
+            onChange={(e) =>
+              setForm((f) => ({ ...f, password: e.target.value }))
+            }
+            placeholder="At least 8 characters"
+          />
           {form.password && (
             <div className="mt-2 flex items-center gap-2">
               <div className="flex flex-1 gap-1">
@@ -133,9 +120,8 @@ export default function SignupPage() {
           )}
         </Field>
         <Field label="Confirm password" htmlFor="confirm" error={errors.confirm}>
-          <Input
+          <PasswordInput
             id="confirm"
-            type={showPw ? "text" : "password"}
             autoComplete="new-password"
             value={form.confirm}
             onChange={(e) => setForm((f) => ({ ...f, confirm: e.target.value }))}

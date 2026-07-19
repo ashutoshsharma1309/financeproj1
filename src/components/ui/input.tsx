@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Eye, EyeOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const Input = React.forwardRef<
@@ -18,6 +19,38 @@ export const Input = React.forwardRef<
   );
 });
 Input.displayName = "Input";
+
+/**
+ * Password field with a show/hide toggle. All props (including id / aria-* wired
+ * by `Field`) are forwarded to the real <input>, so there's no duplicate id or
+ * broken label association — the toggle button lives in the wrapper only.
+ */
+export const PasswordInput = React.forwardRef<
+  HTMLInputElement,
+  React.InputHTMLAttributes<HTMLInputElement>
+>(({ className, ...props }, ref) => {
+  const [show, setShow] = React.useState(false);
+  return (
+    <div className="relative">
+      <Input
+        ref={ref}
+        type={show ? "text" : "password"}
+        className={cn("pr-11", className)}
+        {...props}
+      />
+      <button
+        type="button"
+        tabIndex={-1}
+        onClick={() => setShow((v) => !v)}
+        aria-label={show ? "Hide password" : "Show password"}
+        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
+      >
+        {show ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+      </button>
+    </div>
+  );
+});
+PasswordInput.displayName = "PasswordInput";
 
 export const Textarea = React.forwardRef<
   HTMLTextAreaElement,
