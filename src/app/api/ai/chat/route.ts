@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { SYSTEM_PROMPT, buildUserPrompt } from "@/lib/ai/prompts";
+import { buildUserPrompt } from "@/lib/ai/prompts";
+import { NEXA_SYSTEM_PROMPT } from "@/lib/ai/nexa/persona";
+import { nexaAnswer } from "@/lib/ai/nexa/answer";
 import { generateWithOpenAI, isOpenAIConfigured } from "@/lib/ai/openai";
 import { generateWithGemini, isGeminiConfigured } from "@/lib/ai/gemini";
-import { localAnalysis } from "@/lib/ai/insights";
 import type { FinancialContext } from "@/lib/ai/context";
 
 export const runtime = "nodejs";
@@ -57,13 +58,13 @@ export async function POST(req: NextRequest) {
   if (isOpenAIConfigured()) {
     providers.push({
       mode: "openai",
-      run: () => generateWithOpenAI(SYSTEM_PROMPT, userPrompt),
+      run: () => generateWithOpenAI(NEXA_SYSTEM_PROMPT, userPrompt),
     });
   }
   if (isGeminiConfigured()) {
     providers.push({
       mode: "gemini",
-      run: () => generateWithGemini(SYSTEM_PROMPT, userPrompt),
+      run: () => generateWithGemini(NEXA_SYSTEM_PROMPT, userPrompt),
     });
   }
 
@@ -80,7 +81,7 @@ export async function POST(req: NextRequest) {
 
   // No key configured, or every provider failed — deterministic analysis
   // grounded in the same context so the assistant never fabricates figures.
-  const answer = localAnalysis(question, context);
+  const answer = nexaAnswer(question, context);
   return NextResponse.json(
     lastError
       ? { answer, mode: "local", note: lastError }

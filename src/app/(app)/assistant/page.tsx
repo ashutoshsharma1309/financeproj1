@@ -10,7 +10,7 @@ import { useToast } from "@/components/ui/toast";
 import { useFinanceStore } from "@/lib/store";
 import { useFinanceData, useCurrency } from "@/hooks/use-finance-data";
 import { buildFinancialContext } from "@/lib/ai/context";
-import { SUGGESTED_PROMPTS } from "@/lib/ai/prompts";
+import { NEXA_SUGGESTED_PROMPTS as SUGGESTED_PROMPTS } from "@/lib/ai/nexa/persona";
 import { cn } from "@/lib/utils";
 import type { AIMessage } from "@/lib/types";
 
@@ -78,8 +78,8 @@ export default function AssistantPage() {
   return (
     <div>
       <PageHeader
-        title="AI Assistant"
-        description="Ask financial questions in plain English — answered only from your data."
+        title="Nexa"
+        description="Your AI Business Strategist — advice and forecasts grounded only in your data."
         action={
           <div className="flex items-center gap-3">
             <Badge tone="primary">
@@ -109,11 +109,11 @@ export default function AssistantPage() {
               <span className="clay-sm mb-4 flex h-16 w-16 items-center justify-center rounded-2xl text-primary">
                 <Bot className="h-8 w-8" />
               </span>
-              <h3 className="text-lg font-semibold">Your AI CFO is ready</h3>
+              <h3 className="text-lg font-semibold">Nexa is ready</h3>
               <p className="mt-1.5 max-w-md text-sm text-muted-foreground">
-                I analyze only the revenue, expenses, invoices and accounts
-                you&apos;ve entered. Ask me anything — or start with a suggestion
-                below.
+                I&apos;m your AI Business Strategist. I analyze only the revenue,
+                expenses, invoices and accounts you&apos;ve entered — then advise
+                on health, growth and risk. Ask me anything below.
               </p>
               <div className="mt-6 grid w-full max-w-2xl gap-2.5 sm:grid-cols-2">
                 {SUGGESTED_PROMPTS.slice(0, 6).map((p) => (

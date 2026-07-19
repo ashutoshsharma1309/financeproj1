@@ -40,6 +40,27 @@ export interface FinancialContext {
     invoices: number;
     accounts: number;
   };
+  /** Compact rolling window for daily/weekly digests — six numbers, not rows. */
+  recent: {
+    todayRevenue: number;
+    todayExpenses: number;
+    last7dRevenue: number;
+    last7dExpenses: number;
+    prev7dRevenue: number;
+    prev7dExpenses: number;
+  };
+}
+
+/** Sum a dated stream between two instants (inclusive start, exclusive end). */
+function sumBetween(
+  items: { amount: number; date: string }[],
+  start: number,
+  end: number,
+) {
+  return items.reduce((acc, x) => {
+    const t = new Date(x.date).getTime();
+    return t >= start && t < end ? acc + x.amount : acc;
+  }, 0);
 }
 
 export function buildFinancialContext(
@@ -47,6 +68,13 @@ export function buildFinancialContext(
   currency: string,
 ): FinancialContext {
   const runway = runwayMonths(data);
+  const income = incomeStream(data);
+  const expense = expenseStream(data);
+  const now = new Date();
+  const dayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+  const DAY = 86_400_000;
+  const weekStart = dayStart - 6 * DAY;
+  const prevWeekStart = weekStart - 7 * DAY;
   return {
     currency,
     hasData:
@@ -84,6 +112,14 @@ export function buildFinancialContext(
       expenses: data.expenses.length,
       invoices: data.invoices.length,
       accounts: data.accounts.length,
+    },
+    recent: {
+      todayRevenue: sumBetween(income, dayStart, dayStart + DAY),
+      todayExpenses: sumBetween(expense, dayStart, dayStart + DAY),
+      last7dRevenue: sumBetween(income, weekStart, dayStart + DAY),
+      last7dExpenses: sumBetween(expense, weekStart, dayStart + DAY),
+      prev7dRevenue: sumBetween(income, prevWeekStart, weekStart),
+      prev7dExpenses: sumBetween(expense, prevWeekStart, weekStart),
     },
   };
 }

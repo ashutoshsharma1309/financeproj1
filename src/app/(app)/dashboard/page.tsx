@@ -21,6 +21,7 @@ import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Progress } from "@/components/ui/misc";
 import { TrendAreaChart, BreakdownDonut } from "@/components/charts/lazy";
+import { NexaHealthCard } from "@/components/dashboard/nexa-health-card";
 import { useFinanceStore } from "@/lib/store";
 import { useFinanceData, useCurrency } from "@/hooks/use-finance-data";
 import {
@@ -163,6 +164,9 @@ export default function DashboardPage() {
             />
           </div>
 
+          {/* Nexa business health */}
+          <NexaHealthCard />
+
           {/* Charts */}
           <div className="grid gap-6 lg:grid-cols-3">
             <Card className="lg:col-span-2">
@@ -265,15 +269,15 @@ export default function DashboardPage() {
                 <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
                   <Bot className="h-[22px] w-[22px]" />
                 </span>
-                <h2 className="mt-4 text-base font-semibold">Ask your AI CFO</h2>
+                <h2 className="mt-4 text-base font-semibold">Ask Nexa</h2>
                 <p className="mt-1.5 text-sm text-muted-foreground">
-                  Get plain-English answers about runway, spending and
-                  scenarios — grounded only in these numbers.
+                  Your AI Business Strategist — health scores, growth plans and
+                  what-if scenarios, grounded only in these numbers.
                 </p>
               </div>
               <Link href="/assistant" className="mt-5">
                 <Button className="w-full">
-                  Open assistant <ArrowRight className="h-4 w-4" />
+                  Open Nexa <ArrowRight className="h-4 w-4" />
                 </Button>
               </Link>
             </Card>

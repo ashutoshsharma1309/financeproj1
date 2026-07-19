@@ -22,7 +22,7 @@ const GREETING: Msg = {
   id: 0,
   role: "assistant",
   content:
-    "Hi — I'm your **AI CFO helper**. Ask me *how to use the app* (\"how do I add an invoice?\") or a question about *your finances* (\"what's my runway?\"). Every answer comes from your real data.",
+    "Hi — I'm **Nexa**, your AI Business Strategist. Ask me *how to use the app* (\"how do I add an invoice?\") or about *your business* (\"what's my health score?\", \"where am I losing money?\"). Every answer comes from your real data.",
 };
 
 // A question is a "how-to" if it reads like navigation/product help rather than
@@ -113,9 +113,9 @@ export function ChatWidget() {
           id: nextId(),
           role: "assistant",
           content:
-            "I couldn't reach the assistant just now. Try again, or open the full **AI Assistant** for a deeper look.",
+            "I couldn't reach the strategist just now. Try again, or open the full **Nexa** workspace for a deeper look.",
           href: "/assistant",
-          cta: "Open AI Assistant",
+          cta: "Open Nexa",
         },
       ]);
     } finally {
@@ -152,7 +152,7 @@ export function ChatWidget() {
               <Bot className="h-5 w-5" aria-hidden />
             </span>
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-semibold leading-tight">AI CFO helper</p>
+              <p className="text-sm font-semibold leading-tight">Nexa</p>
               <p className="flex items-center gap-1 text-xs text-muted-foreground">
                 <Sparkles className="h-3 w-3" aria-hidden /> Grounded in your data
               </p>

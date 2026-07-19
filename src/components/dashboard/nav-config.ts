@@ -35,7 +35,7 @@ export const NAV_GROUPS: NavGroup[] = [
     title: "Overview",
     items: [
       { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard, permission: "view:dashboard" },
-      { href: "/assistant", label: "AI Assistant", icon: Bot, permission: "use:ai" },
+      { href: "/assistant", label: "Nexa", icon: Bot, permission: "use:ai" },
     ],
   },
   {
